@@ -10,4 +10,11 @@
     </parent>
     <artifactId>core-user</artifactId>
 
+    <dependencies>
+    	<dependency>
+    		<groupId>hamster.bonus</groupId>
+    		<artifactId>core-common</artifactId>
+    		<version>${project.version}</version>
+    	</dependency>
+    </dependencies>
 </project>

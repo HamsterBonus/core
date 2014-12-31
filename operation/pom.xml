@@ -11,4 +11,11 @@
     <artifactId>core-operation</artifactId>
 
 
+    <dependencies>
+    	<dependency>
+    		<groupId>hamster.bonus</groupId>
+    		<artifactId>core-user</artifactId>
+    		<version>${project.version}</version>
+    	</dependency>
+    </dependencies>
 </project>
