@@ -11,13 +11,17 @@ public class Amount implements Serializable, Comparable<Amount> {
 
     private static final long serialVersionUID = 1L;
 
-    private final BigDecimal calculationValue;
-    private final BigDecimal userValue;
+    private final BigDecimal value;
+    private final BigDecimal displayValue;
     private final Currency currency;
 
-    public Amount(BigDecimal calculationValue, BigDecimal userValue, Currency currency) {
-        this.userValue = Preconditions.checkNotNull(userValue);
-        this.calculationValue = Preconditions.checkNotNull(calculationValue);
+    public Amount(BigDecimal value, Currency currency) {
+    	this(value, value, currency);
+    }
+
+    public Amount(BigDecimal value, BigDecimal displayValue, Currency currency) {
+        this.displayValue = Preconditions.checkNotNull(displayValue);
+        this.value = Preconditions.checkNotNull(value);
         this.currency = Preconditions.checkNotNull(currency);
     }
 
@@ -30,23 +34,23 @@ public class Amount implements Serializable, Comparable<Amount> {
     }
 
     public BigDecimal getValue() {
-        return calculationValue;
+        return value;
     }
 
-    public BigDecimal getUserValue() {
-        return userValue;
+    public BigDecimal getDisplayValue() {
+        return displayValue;
     }
 
     public double getDoubleValue() {
-        return userValue.doubleValue();
+        return displayValue.doubleValue();
     }
 
     public boolean isSign() {
-        return calculationValue.compareTo(BigDecimal.ZERO) >= 0;
+        return value.compareTo(BigDecimal.ZERO) >= 0;
     }
 
     public boolean isEmpty() {
-        return calculationValue.compareTo(BigDecimal.ZERO) == 0;
+        return value.compareTo(BigDecimal.ZERO) == 0;
     }
 
     public int compareTo(Amount o) {
@@ -56,12 +60,12 @@ public class Amount implements Serializable, Comparable<Amount> {
         if (!currency.equals(o.getCurrency())) {
             throw new IllegalArgumentException("It's impossible to compare amounts with different currencies.");
         }
-        return userValue.compareTo(o.getUserValue());
+        return displayValue.compareTo(o.displayValue);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(currency, userValue);
+        return Objects.hashCode(currency, displayValue);
     }
 
     @Override
@@ -71,15 +75,15 @@ public class Amount implements Serializable, Comparable<Amount> {
         }
         Amount other = (Amount) obj;
         return Objects.equal(currency, other.currency)
-                && Objects.equal(userValue, other.userValue);
+                && Objects.equal(displayValue, other.displayValue);
     }
 
     @Override
     public String toString() {
         return Objects.toStringHelper(this)
-                        .addValue(userValue)
-                        .addValue(calculationValue)
-                        .addValue(currency)
+                        .add("displayValue", displayValue)
+                        .add("value", value)
+                        .add("currency", currency)
                             .toString();
     }
 
