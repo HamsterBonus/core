@@ -1,5 +1,7 @@
 package hamster.bonus.model;
 
+import java.util.Collection;
+
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 
@@ -7,22 +9,22 @@ public class Merchant extends AEntity {
 
 	private static final long serialVersionUID = 1L;
 
-	private final String balance;
+	private final Collection<String> balances;
 	
-	public Merchant(String id, String balance) {
+	public Merchant(String id, Collection<String> balances) {
 		super(id);
-		this.balance = Preconditions.checkNotNull(balance);
+		this.balances = Preconditions.checkNotNull(balances);
 	}
 	
-	public String getBalance() {
-		return balance;
+	public Collection<String> getBalances() {
+		return balances;
 	}
 
 	@Override
     public String toString() {
         return Objects.toStringHelper(this)
                         .add("id", getId())
-                        .add("balance", balance)
+                        .add("balances", balances)
                             .toString();
     }
 

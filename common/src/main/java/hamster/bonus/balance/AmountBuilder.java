@@ -11,7 +11,7 @@ import org.apache.commons.lang3.StringUtils;
 import com.google.common.base.Objects;
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
-import com.google.common.collect.Sets;
+import com.google.common.collect.Lists;
 
 import hamster.bonus.model.Amount;
 
@@ -33,7 +33,7 @@ public class AmountBuilder<T extends AmountBuilder<T>> {
 	}
 	
 	private AmountBuilder(){
-		calcs = Sets.newHashSet();
+		calcs = Lists.newArrayList();
 	}
 	
 	public Amount build(){

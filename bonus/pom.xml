@@ -8,12 +8,12 @@
         <groupId>hamster.bonus</groupId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
-    <artifactId>core-operation</artifactId>
+    <artifactId>core-bonus</artifactId>
 
     <dependencies>
     	<dependency>
     		<groupId>hamster.bonus</groupId>
-    		<artifactId>core-user</artifactId>
+    		<artifactId>core-common</artifactId>
     	</dependency>
     </dependencies>
 

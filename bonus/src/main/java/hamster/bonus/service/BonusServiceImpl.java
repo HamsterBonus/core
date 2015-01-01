@@ -1,14 +1,14 @@
 package hamster.bonus.service;
 
 import hamster.bonus.model.Account;
-import hamster.bonus.model.Operation;
+import hamster.bonus.model.PaymentBonus;
 import hamster.bonus.model.Transaction;
 import hamster.bonus.model.User;
 
 public class BonusServiceImpl implements BonusService {
 
 	@Override
-	public Operation start(Operation data) {
+	public PaymentBonus start(PaymentBonus data) {
 		return null;
 	}
 
