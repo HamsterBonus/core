@@ -51,7 +51,7 @@ public class AmountBuilder {
 		if(c.getDefaultFractionDigits() <= 0){
 			return value(Objects.firstNonNull(integer, "0"));
 		}
-		return value(
+		return currency(c).value(
 				Objects.firstNonNull(integer, "0") 
 				+ "."
 				+ StringUtils.leftPad(Objects.firstNonNull(fraction, "0"), c.getDefaultFractionDigits(), '0')
