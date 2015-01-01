@@ -60,12 +60,12 @@ public class Amount implements Serializable, Comparable<Amount> {
         if (!currency.equals(o.getCurrency())) {
             throw new IllegalArgumentException("It's impossible to compare amounts with different currencies.");
         }
-        return displayValue.compareTo(o.displayValue);
+        return value.compareTo(o.value);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(currency, displayValue);
+        return Objects.hashCode(currency, value);
     }
 
     @Override
@@ -75,7 +75,7 @@ public class Amount implements Serializable, Comparable<Amount> {
         }
         Amount other = (Amount) obj;
         return Objects.equal(currency, other.currency)
-                && Objects.equal(displayValue, other.displayValue);
+                && Objects.equal(value, other.value);
     }
 
     @Override
