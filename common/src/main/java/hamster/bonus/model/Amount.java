@@ -2,7 +2,6 @@ package hamster.bonus.model;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.Currency;
 
 import com.google.common.base.Objects;
@@ -16,10 +15,9 @@ public class Amount implements Serializable, Comparable<Amount> {
     private final BigDecimal userValue;
     private final Currency currency;
 
-    public Amount(final BigDecimal value, Currency currency) {
-        Preconditions.checkNotNull(value);
-        this.userValue = value.setScale(2, RoundingMode.HALF_EVEN);
-        this.calculationValue = value.setScale(6, RoundingMode.HALF_EVEN);
+    public Amount(BigDecimal calculationValue, BigDecimal userValue, Currency currency) {
+        this.userValue = Preconditions.checkNotNull(userValue);
+        this.calculationValue = Preconditions.checkNotNull(calculationValue);
         this.currency = Preconditions.checkNotNull(currency);
     }
 

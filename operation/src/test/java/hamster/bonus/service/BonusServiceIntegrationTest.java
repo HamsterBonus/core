@@ -3,12 +3,11 @@ package hamster.bonus.service;
 import static org.junit.Assert.*;
 
 import java.math.BigDecimal;
-import java.util.Currency;
 
 import javax.annotation.Resource;
 
 import hamster.bonus.IntegrationTestConfig;
-import hamster.bonus.model.Amount;
+import hamster.bonus.balance.AmountBuilder;
 import hamster.bonus.model.Operation;
 
 import org.junit.Test;
@@ -25,7 +24,7 @@ public class BonusServiceIntegrationTest {
 	
 	@Test
 	public void testCorrectStart(){
-		Operation o = new Operation(null, "1", null, new Amount(BigDecimal.TEN, Currency.getInstance("RUB")), new Amount(BigDecimal.ONE, Currency.getInstance("RUB")));
+		Operation o = new Operation(null, "1", null, AmountBuilder.create().value(BigDecimal.TEN).rub().build(), AmountBuilder.create().value(BigDecimal.ONE).rub().build());
 		Operation first = check(o, bonusService.start(o));
 		Operation second = check(o, bonusService.start(o));
 		assertNotSame(first.getId(), second.getId());
