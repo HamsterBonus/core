@@ -14,7 +14,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {IntegrationTestConfig.class})
-public class BonusServiceIntegrationTest {
+public class BonusServiceTest {
 
 	@Resource
 	BonusService bonusService;
