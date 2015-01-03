@@ -1,20 +1,25 @@
 package hamster.bonus.spring;
 
+import hamster.bonus.module.SqlScriptResource;
+import hamster.bonus.module.SqlScript;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.datasource.init.DataSourceInitializer;
 import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 
 import javax.sql.DataSource;
+import java.util.List;
 
 @Configuration
-public class CoreCommonConfig {
+public class CoreCommonConfig implements InitializingBean {
 
     @Autowired
     DataSource dataSource;
+    @Autowired(required = false)
+    List<SqlScript> sqlScripts;
 
     @Bean
     public DataSourceInitializer dataSourceInitializer() {
@@ -26,10 +31,21 @@ public class CoreCommonConfig {
 
     @Bean
     @Profile("DB_H2")
-    public ResourceDatabasePopulator resourceDatabasePopulator() {
-        ResourceDatabasePopulator resourceDatabasePopulator = new ResourceDatabasePopulator();
-        resourceDatabasePopulator.addScript(new ClassPathResource("db/h2/common.sql"));
-        return resourceDatabasePopulator;
+    public SqlScript h2CoreCommonScript() {
+        return new SqlScriptResource("db/h2/common.sql");
     }
 
+    @Bean
+    public ResourceDatabasePopulator resourceDatabasePopulator() {
+        return new ResourceDatabasePopulator();
+    }
+
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        if(sqlScripts != null){
+            for(SqlScript r : sqlScripts){
+                resourceDatabasePopulator().addScript(r);
+            }
+        }
+    }
 }
