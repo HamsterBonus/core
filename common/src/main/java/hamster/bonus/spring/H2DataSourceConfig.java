@@ -14,11 +14,7 @@ public class H2DataSourceConfig {
 
     @Bean
     public DataSource dataSource() {
-        EmbeddedDatabaseBuilder builder = new EmbeddedDatabaseBuilder().setType(EmbeddedDatabaseType.H2);
-        //for (String script : getScripts()) {
-        //    builder.addScript(script);
-        //}
-        return builder.build();
+        return new EmbeddedDatabaseBuilder().setType(EmbeddedDatabaseType.H2).build();
     }
 
 }
