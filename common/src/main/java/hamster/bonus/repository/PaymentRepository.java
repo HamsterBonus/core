@@ -1,5 +1,6 @@
 package hamster.bonus.repository;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import com.nurkiewicz.jdbcrepository.JdbcRepository;
 import com.nurkiewicz.jdbcrepository.RowUnmapper;
@@ -27,11 +28,18 @@ public class PaymentRepository extends JdbcRepository<Payment, String>{
     public static RowUnmapper<Payment> rowUnmapper = new RowUnmapper<Payment>(){
         @Override
         public Map<String, Object> mapColumns(Payment payment) {
-            return Maps.newHashMap();
+            return ImmutableMap.<String, Object>builder().
+                    put("merchant", payment.getMerchant())
+                    .build();
         }
     };
 
     public PaymentRepository() {
         super(rowMapper, rowUnmapper, new TableDescription("payment", null, "id"));
+    }
+
+    @Override
+    protected Payment postCreate(Payment entity, Number generatedId) {
+        return new Payment(generatedId.toString(), entity.getMerchant(), entity.getTransaction(), entity.getAmount());
     }
 }

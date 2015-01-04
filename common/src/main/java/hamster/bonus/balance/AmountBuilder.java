@@ -1,5 +1,6 @@
 package hamster.bonus.balance;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Collection;
@@ -15,8 +16,10 @@ import com.google.common.collect.Lists;
 
 import hamster.bonus.model.Amount;
 
-public class AmountBuilder<T extends AmountBuilder<T>> {
-	
+public class AmountBuilder<T extends AmountBuilder<T>> implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
 	protected Optional<Currency> currency = Optional.absent();
 	protected Optional<BigDecimal> value = Optional.absent();
 	private Collection<Calculation<?>> calcs;
@@ -160,7 +163,9 @@ public class AmountBuilder<T extends AmountBuilder<T>> {
 	}
 	
 	public static abstract class Calculation<C extends Calculation<C>> extends AmountBuilder<C> {
-		
+
+        private static final long serialVersionUID = 1L;
+
 		private final AmountBuilder<?> parent;
 
 		public Calculation(AmountBuilder<?> parent) {
@@ -189,6 +194,8 @@ public class AmountBuilder<T extends AmountBuilder<T>> {
 
 	public static class Add extends Calculation<Add> {
 
+        private static final long serialVersionUID = 1L;
+
 		public Add(AmountBuilder<?> parent) {
 			super(parent);
 		}
@@ -202,7 +209,9 @@ public class AmountBuilder<T extends AmountBuilder<T>> {
 	
 	public static class Multiply extends Calculation<Multiply> {
 
-		public Multiply(AmountBuilder<?> parent) {
+        private static final long serialVersionUID = 1L;
+
+        public Multiply(AmountBuilder<?> parent) {
 			super(parent);
 		}
 
@@ -215,7 +224,9 @@ public class AmountBuilder<T extends AmountBuilder<T>> {
 
 	public static class Reduce extends Calculation<Reduce> {
 
-		public Reduce(AmountBuilder<?> parent) {
+        private static final long serialVersionUID = 1L;
+
+        public Reduce(AmountBuilder<?> parent) {
 			super(parent);
 		}
 

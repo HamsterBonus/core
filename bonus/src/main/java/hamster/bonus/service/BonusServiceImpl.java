@@ -1,10 +1,8 @@
 package hamster.bonus.service;
 
 import com.google.common.base.Preconditions;
-import hamster.bonus.model.Account;
-import hamster.bonus.model.PaymentBonus;
-import hamster.bonus.model.Transaction;
-import hamster.bonus.model.User;
+import hamster.bonus.bonus.StartData;
+import hamster.bonus.model.*;
 import hamster.bonus.repository.PaymentRepository;
 
 public class BonusServiceImpl implements BonusService {
@@ -16,8 +14,9 @@ public class BonusServiceImpl implements BonusService {
     }
 
     @Override
-	public PaymentBonus start(PaymentBonus data) {
-		return null;
+	public PaymentBonus start(StartData data) {
+        Payment payment = paymentRepository.save(new Payment(null, data.getMerchant(), data.getTransaction(), data.getAmount()));
+		return new PaymentBonus("1", payment.getId(), null, data.getBonusAmount());
 	}
 
 	@Override
