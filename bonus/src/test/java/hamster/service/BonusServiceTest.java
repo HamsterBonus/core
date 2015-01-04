@@ -7,7 +7,7 @@ import javax.annotation.Resource;
 
 import hamster.IntegrationTestConfig;
 
-import hamster.bonus.StartData;
+import hamster.bonus.SimpleCreationData;
 import hamster.model.PaymentBonus;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,11 +25,12 @@ public class BonusServiceTest {
 	
 	@Test
 	public void test(){
-        StartData data = new StartData();
-        data.setAmountCurrency("RUB");
-        data.setAmountValue("1");
-        data.setMerchant("1");
-		PaymentBonus bonus = bonusService.start(data);
+		PaymentBonus bonus = bonusService.start(
+                new SimpleCreationData()
+                        .setAmountValue("1")
+                        .setAmountCurrency("RUB")
+                        .setMerchant("1")
+        );
         assertNotNull(bonus);
         assertNotNull(bonus.getPayment());
 	}

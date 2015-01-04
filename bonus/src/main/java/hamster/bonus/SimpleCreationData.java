@@ -3,9 +3,7 @@ package hamster.bonus;
 import hamster.balance.AmountBuilder;
 import hamster.model.Amount;
 
-import java.io.Serializable;
-
-public class StartData implements Serializable {
+public class SimpleCreationData implements CreationData {
 
     private static final long serialVersionUID = 1L;
 
@@ -14,44 +12,54 @@ public class StartData implements Serializable {
     private AmountBuilder amount = AmountBuilder.create();
     private AmountBuilder bonusAmount = AmountBuilder.create();
 
+    @Override
     public String getMerchant() {
         return merchant;
     }
 
-    public void setMerchant(String merchant) {
+    public SimpleCreationData setMerchant(String merchant) {
         this.merchant = merchant;
+        return this;
     }
 
+    @Override
     public String getTransaction() {
         return transaction;
     }
 
-    public void setTransaction(String transaction) {
+    public SimpleCreationData setTransaction(String transaction) {
         this.transaction = transaction;
+        return this;
     }
 
+    @Override
     public Amount getAmount() {
         return amount.build();
     }
 
-    public void setAmountValue(String value) {
+    public SimpleCreationData setAmountValue(String value) {
         this.amount.value(value);
+        return this;
     }
 
-    public void setAmountCurrency(String currency) {
+    public SimpleCreationData setAmountCurrency(String currency) {
         this.amount.currency(currency);
+        return this;
     }
 
+    @Override
     public Amount getBonusAmount() {
         return bonusAmount.build();
     }
 
-    public void setBonusValue(String value) {
+    public SimpleCreationData setBonusValue(String value) {
         this.bonusAmount.value(value);
+        return this;
     }
 
-    public void setBonusCurrency(String currency) {
+    public SimpleCreationData setBonusCurrency(String currency) {
         this.bonusAmount.currency(currency);
+        return this;
     }
 
 }

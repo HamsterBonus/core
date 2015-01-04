@@ -6,6 +6,7 @@ import com.nurkiewicz.jdbcrepository.RowUnmapper;
 import com.nurkiewicz.jdbcrepository.TableDescription;
 import hamster.balance.AmountBuilder;
 import hamster.model.Payment;
+import hamster.payment.PaymentBuilder;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
@@ -39,6 +40,7 @@ public class PaymentRepository extends JdbcRepository<Payment, String>{
 
     @Override
     protected Payment postCreate(Payment entity, Number generatedId) {
-        return new Payment(generatedId.toString(), entity.getMerchant(), entity.getTransaction(), entity.getAmount());
+        return PaymentBuilder.create(entity)
+                    .id(generatedId.toString()).build();
     }
 }
