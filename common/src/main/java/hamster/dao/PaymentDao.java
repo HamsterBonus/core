@@ -1,10 +1,8 @@
-package hamster.repository;
+package hamster.dao;
 
-import com.google.common.collect.ImmutableMap;
 import com.nurkiewicz.jdbcrepository.JdbcRepository;
 import com.nurkiewicz.jdbcrepository.RowUnmapper;
 import com.nurkiewicz.jdbcrepository.TableDescription;
-import hamster.balance.AmountBuilder;
 import hamster.model.Payment;
 import hamster.payment.PaymentBuilder;
 import org.springframework.jdbc.core.RowMapper;
@@ -14,27 +12,36 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Map;
 
+import static hamster.dao.Utils.*;
+
 @Repository
-public class PaymentRepository extends JdbcRepository<Payment, String>{
+public class PaymentDao extends JdbcRepository<Payment, String>{
 
     public static RowMapper<Payment> rowMapper = new RowMapper<Payment>(){
 
         @Override
         public Payment mapRow(ResultSet rs, int rowNum) throws SQLException {
-            return new Payment(rs.getString("id"), "1", null, AmountBuilder.create().build());
+            return new Payment(
+                            rs.getString("id"),
+                            rs.getString("merchant"),
+                            rs.getString("transaction"),
+                            createAmount(rs)
+            );
         }
     };
 
     public static RowUnmapper<Payment> rowUnmapper = new RowUnmapper<Payment>(){
         @Override
         public Map<String, Object> mapColumns(Payment payment) {
-            return ImmutableMap.<String, Object>builder().
-                    put("merchant", payment.getMerchant())
-                    .build();
+            return ColumnsBuilder.create()
+                        .add("merchant", payment.getMerchant())
+                        .add("transaction", payment.getTransaction())
+                        .add(payment.getAmount())
+            .build();
         }
     };
 
-    public PaymentRepository() {
+    public PaymentDao() {
         super(rowMapper, rowUnmapper, new TableDescription("payment", null, "id"));
     }
 

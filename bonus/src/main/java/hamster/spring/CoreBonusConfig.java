@@ -2,7 +2,7 @@ package hamster.spring;
 
 import hamster.module.SqlScript;
 import hamster.module.SqlScriptResource;
-import hamster.repository.PaymentRepository;
+import hamster.dao.PaymentDao;
 import hamster.service.BonusService;
 import hamster.service.BonusServiceImpl;
 
@@ -15,11 +15,11 @@ import org.springframework.context.annotation.Profile;
 public class CoreBonusConfig {
 
     @Autowired
-    PaymentRepository paymentRepository;
+    PaymentDao paymentDao;
 
 	@Bean
 	public BonusService bonusService(){
-		return new BonusServiceImpl(paymentRepository);
+		return new BonusServiceImpl(paymentDao);
 	}
 
     @Bean
