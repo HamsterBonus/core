@@ -5,14 +5,14 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <artifactId>core</artifactId>
-        <groupId>hamster.bonus</groupId>
+        <groupId>hamster</groupId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
     <artifactId>core-bonus</artifactId>
 
     <dependencies>
     	<dependency>
-    		<groupId>hamster.bonus</groupId>
+    		<groupId>hamster</groupId>
     		<artifactId>core-common</artifactId>
     	</dependency>
     </dependencies>
