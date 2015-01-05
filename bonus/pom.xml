@@ -11,6 +11,10 @@
     <artifactId>core-bonus</artifactId>
 
     <dependencies>
+        <dependency>
+            <groupId>hamster</groupId>
+            <artifactId>core-test</artifactId>
+        </dependency>
     	<dependency>
     		<groupId>hamster</groupId>
     		<artifactId>core-common</artifactId>

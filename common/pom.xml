@@ -49,6 +49,10 @@
             <artifactId>jdbcrepository</artifactId>
             <version>0.4</version>
         </dependency>
+        <dependency>
+            <groupId>hamster</groupId>
+            <artifactId>core-test</artifactId>
+        </dependency>
     </dependencies>
 	
 </project>
