@@ -27,11 +27,21 @@ public class IntegrationExecutionListener implements TestExecutionListener {
 
     @Override
     public void beforeTestClass(TestContext testContext) throws Exception {
-        DataSets dataSets = testContext.getTestClass().getAnnotation(DataSets.class);
-        if (dataSets == null || StringUtils.isEmpty(dataSets.setUpDataSet())) {
+        DataSets dataSets = chooseClassDataSets(testContext.getTestClass(), testContext.getTestClass().getSuperclass());
+        if (dataSets == null) {
             return;
         }
         typeDataSet = load(testContext, dataSets);
+    }
+
+    private DataSets chooseClassDataSets(Class<?> ... classes){
+        for(Class<?> c : classes){
+            DataSets dataSets = c.getAnnotation(DataSets.class);
+            if (dataSets != null && !StringUtils.isEmpty(dataSets.setUpDataSet())) {
+                return dataSets;
+            }
+        }
+        return null;
     }
 
     @Override

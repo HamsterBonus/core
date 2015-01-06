@@ -14,6 +14,7 @@ import org.springframework.test.context.support.DependencyInjectionTestExecution
 @TestExecutionListeners({ IntegrationExecutionListener.class, DependencyInjectionTestExecutionListener.class })
 @ContextConfiguration(classes = {IntegrationConfig.class})
 @ActiveProfiles("DB_H2")
+@DataSets(setUpDataSet="/db/TestData.xls")
 public abstract class AServiceTest{// extends AbstractTransactionalJUnit4SpringContextTests {
 
 }
