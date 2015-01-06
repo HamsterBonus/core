@@ -2,15 +2,14 @@ package hamster.service;
 
 import static org.junit.Assert.*;
 
-import javax.annotation.Resource;
-
 import hamster.bonus.SimpleCreationData;
 import hamster.model.PaymentBonus;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class BonusServiceTest extends AServiceTest {
 
-	@Resource
+	@Autowired
 	BonusService bonusService;
 	
 	@Test
