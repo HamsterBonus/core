@@ -9,6 +9,7 @@ public class SimpleCreationData implements CreationData {
 
     private String merchant;
     private String transaction;
+    private String program;
     private AmountBuilder amount = AmountBuilder.create();
     private AmountBuilder bonusAmount = AmountBuilder.create();
 
@@ -62,4 +63,13 @@ public class SimpleCreationData implements CreationData {
         return this;
     }
 
+    @Override
+    public String getProgram() {
+        return program;
+    }
+
+    public SimpleCreationData setProgram(String program) {
+        this.program = program;
+        return this;
+    }
 }

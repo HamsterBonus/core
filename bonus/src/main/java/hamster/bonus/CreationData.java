@@ -4,6 +4,7 @@ import hamster.model.Amount;
 
 public interface CreationData extends hamster.payment.CreationData{
 
+    String getProgram();
     Amount getBonusAmount();
 
 }

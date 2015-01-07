@@ -5,13 +5,13 @@ import com.google.common.collect.ImmutableList;
 
 import java.util.Collection;
 
-public class BonusProgramm extends AEntity {
+public class BonusProgram extends AEntity {
 
     private static final long serialVersionUID = 1L;
 
     private final Collection<String> merchants;
 
-    public BonusProgramm(String id, Collection<String> merchants) {
+    public BonusProgram(String id, Collection<String> merchants) {
         super(id);
         if(merchants !=null){
             this.merchants = ImmutableList.copyOf(merchants);

@@ -10,8 +10,8 @@ public interface BonusService {
 
 	PaymentBonus start(CreationData data);
 	
-	Transaction linkUser(String operation, Account account);
+	Transaction linkUser(String bonus, Account account);
 	
-	void confirm(String operation, User user);
+	void confirm(String bonus, User manager);
 	
 }

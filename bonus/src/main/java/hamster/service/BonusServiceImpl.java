@@ -16,17 +16,31 @@ public class BonusServiceImpl implements BonusService {
 
     @Override
 	public PaymentBonus start(CreationData data) {
+        // check data values
+        // save payment
         Payment payment = paymentDao.save(PaymentBuilder.create(data).build());
+        // check merchant status
+        // choose bonus program or check that program exists
+        // calculate bonus amount if value is empty
+        // save payment bonus
 		return new PaymentBonus("1", payment.getId(), null, data.getBonusAmount());
 	}
 
 	@Override
-	public Transaction linkUser(String operation, Account account) {
+	public Transaction linkUser(String bonus, Account account) {
+        // check user exists
+        // if not create user and save account
+        // find bonus and check that transaction is empty
+        // save transaction
+        // save bonus with transaction value
 		return null;
 	}
 
 	@Override
-	public void confirm(String operation, User user) {
+	public void confirm(String bonus, User manager) {
+        // check user has permission to do operation
+        // check transaction status
+        // handle transaction
 	}
 
 }

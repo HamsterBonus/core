@@ -11,7 +11,7 @@ public class Account extends AEntity {
 	
 	public Account(String id, String user) {
 		super(id);
-		this.user = Preconditions.checkNotNull(user);
+		this.user = user;
 	}
 
 	public String getUser() {
