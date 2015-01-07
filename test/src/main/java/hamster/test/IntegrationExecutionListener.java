@@ -22,6 +22,7 @@ public class IntegrationExecutionListener implements TestExecutionListener {
     public void afterTestMethod(TestContext testContext) throws Exception {
         if (databaseTester != null) {
             databaseTester.onTearDown();
+            databaseTester = null;
         }
     }
 

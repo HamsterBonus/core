@@ -1,7 +1,7 @@
 package hamster.service;
 
 import com.google.common.base.Preconditions;
-import hamster.bonus.CreationData;
+import hamster.bonus.BonusData;
 import hamster.model.*;
 import hamster.payment.PaymentBuilder;
 import hamster.dao.PaymentDao;
@@ -15,15 +15,16 @@ public class BonusServiceImpl implements BonusService {
     }
 
     @Override
-	public PaymentBonus start(CreationData data) {
+	public PaymentBonus start(BonusData data) {
         // check data values
+        data.validate();
         // save payment
-        Payment payment = paymentDao.save(PaymentBuilder.create(data).build());
+        Payment payment = paymentDao.save(PaymentBuilder.create(data.getPayment()).build());
         // check merchant status
         // choose bonus program or check that program exists
         // calculate bonus amount if value is empty
         // save payment bonus
-		return new PaymentBonus("1", payment.getId(), null, data.getBonusAmount());
+		return new PaymentBonus("1", payment.getId(), null, data.getAmount());
 	}
 
 	@Override

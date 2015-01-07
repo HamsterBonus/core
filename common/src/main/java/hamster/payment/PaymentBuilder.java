@@ -14,7 +14,7 @@ public class PaymentBuilder {
         return new PaymentBuilder();
     }
 
-    public static PaymentBuilder create(CreationData data){
+    public static PaymentBuilder create(PaymentData data){
         return create()
                 .merchant(data.getMerchant())
                 .transaction(data.getTransaction())
