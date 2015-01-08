@@ -4,19 +4,26 @@ import java.util.Collection;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
+import hamster.state.State;
 
 public class Merchant extends AEntity {
 
 	private static final long serialVersionUID = 1L;
 
+    private final MerchantState state;
 	private final Collection<String> balances;
 	
-	public Merchant(String id, Collection<String> balances) {
+	public Merchant(String id, MerchantState state, Collection<String> balances) {
 		super(id);
-		this.balances = Preconditions.checkNotNull(balances);
+        this.state = Preconditions.checkNotNull(state);
+		this.balances = balances;
 	}
-	
-	public Collection<String> getBalances() {
+
+    public MerchantState getState() {
+        return state;
+    }
+
+    public Collection<String> getBalances() {
 		return balances;
 	}
 
@@ -24,6 +31,7 @@ public class Merchant extends AEntity {
     public String toString() {
         return Objects.toStringHelper(this)
                         .add("id", getId())
+                        .add("state", state)
                         .add("balances", balances)
                             .toString();
     }
