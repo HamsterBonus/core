@@ -23,8 +23,7 @@ public class MerchantDao  extends JdbcRepository<Merchant, String> {
             //todo: get balances
             return new Merchant(
                     rs.getString("id"),
-                    Enums.getIfPresent(MerchantState.class, rs.getString("state_id")).orNull(),
-                    null
+                    Enums.getIfPresent(MerchantState.class, rs.getString("state_id")).orNull()
             );
         }
     };
