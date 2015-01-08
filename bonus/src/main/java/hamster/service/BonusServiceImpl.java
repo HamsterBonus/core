@@ -7,7 +7,12 @@ import hamster.model.*;
 import hamster.payment.PaymentBuilder;
 import hamster.dao.PaymentDao;
 import hamster.validation.ValidationException;
-
+/*
+1. start method
+2. test refactoring
+3. tx tests
+4. confirm method with security tests
+ */
 public class BonusServiceImpl implements BonusService {
 
     private PaymentDao paymentDao;
@@ -31,7 +36,7 @@ public class BonusServiceImpl implements BonusService {
             throw new ValidationException("Merchant id is incorrect");
         }
         // choose bonus program or check that program exists
-        // calculate bonus amount if value is empty
+        // calculate bonus amount if value is empty and check merchant balance
         // save payment bonus
 		return new PaymentBonus("1", payment.getId(), null, data.getAmount());
 	}
