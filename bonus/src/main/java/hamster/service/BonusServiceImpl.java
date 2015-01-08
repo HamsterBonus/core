@@ -2,29 +2,40 @@ package hamster.service;
 
 import com.google.common.base.Preconditions;
 import hamster.bonus.BonusData;
+import hamster.dao.BonusProgramMerchantDao;
 import hamster.dao.MerchantDao;
 import hamster.model.*;
 import hamster.payment.PaymentBuilder;
 import hamster.dao.PaymentDao;
 import hamster.validation.ValidationException;
+
+import java.util.Collection;
+
 /*
-1. start method
-2. test refactoring
-3. tx tests
-4. confirm method with security tests
+dao interface
+start method
+test refactoring
+tx tests
+error code foe exception
+confirm method with security tests
  */
 public class BonusServiceImpl implements BonusService {
 
     private PaymentDao paymentDao;
     private MerchantDao merchantDao;
+    private BonusProgramMerchantDao bonusProgramMerchantDao;
 
-    public BonusServiceImpl(PaymentDao paymentDao, MerchantDao merchantDao) {
+    public BonusServiceImpl(PaymentDao paymentDao,
+                            MerchantDao merchantDao,
+                            BonusProgramMerchantDao bonusProgramMerchantDao) {
         this.paymentDao = Preconditions.checkNotNull(paymentDao);
         this.merchantDao = Preconditions.checkNotNull(merchantDao);
+        this.bonusProgramMerchantDao = bonusProgramMerchantDao;
     }
 
     @Override
 	public PaymentBonus start(BonusData data) {
+        //todo: Action and Chain
         // check data values
         data.validate();
         // save payment
@@ -36,6 +47,8 @@ public class BonusServiceImpl implements BonusService {
             throw new ValidationException("Merchant id is incorrect");
         }
         // choose bonus program or check that program exists
+        Collection<BonusProgramMerchant> programs = bonusProgramMerchantDao.findByMerchant(merchant.getId());
+
         // calculate bonus amount if value is empty and check merchant balance
         // save payment bonus
 		return new PaymentBonus("1", payment.getId(), null, data.getAmount());

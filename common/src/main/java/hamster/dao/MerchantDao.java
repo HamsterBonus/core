@@ -20,7 +20,6 @@ public class MerchantDao  extends JdbcRepository<Merchant, String> {
 
         @Override
         public Merchant mapRow(ResultSet rs, int rowNum) throws SQLException {
-            //todo: get balances
             return new Merchant(
                     rs.getString("id"),
                     Enums.getIfPresent(MerchantState.class, rs.getString("state_id")).orNull()
@@ -31,7 +30,6 @@ public class MerchantDao  extends JdbcRepository<Merchant, String> {
     public static RowUnmapper<Merchant> rowUnmapper = new RowUnmapper<Merchant>(){
         @Override
         public Map<String, Object> mapColumns(Merchant merchant) {
-            //todo: balances
             return Utils.ColumnsBuilder.create()
                     .add("state", merchant.getState().getId())
                     .build();

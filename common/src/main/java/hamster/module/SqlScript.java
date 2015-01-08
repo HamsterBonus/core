@@ -2,5 +2,8 @@ package hamster.module;
 
 import org.springframework.core.io.Resource;
 
-public interface SqlScript extends Resource {
+public interface SqlScript extends Resource, Comparable<SqlScript> {
+
+    int getOrder();
+
 }

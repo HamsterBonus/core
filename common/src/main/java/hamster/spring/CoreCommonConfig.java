@@ -11,6 +11,7 @@ import org.springframework.jdbc.datasource.init.DataSourceInitializer;
 import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 
 import javax.sql.DataSource;
+import java.util.Collections;
 import java.util.List;
 
 @Configuration
@@ -32,7 +33,7 @@ public class CoreCommonConfig implements InitializingBean {
     @Bean
     @Profile("DB_H2")
     public SqlScript h2CoreCommonScript() {
-        return new SqlScriptResource("db/h2/common.sql");
+        return new SqlScriptResource(0, "db/h2/common.sql");
     }
 
     @Bean
@@ -43,6 +44,7 @@ public class CoreCommonConfig implements InitializingBean {
     @Override
     public void afterPropertiesSet() throws Exception {
         if(sqlScripts != null){
+            Collections.sort(sqlScripts);
             for(SqlScript r : sqlScripts){
                 resourceDatabasePopulator().addScript(r);
             }

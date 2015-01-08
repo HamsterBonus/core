@@ -1,34 +1,28 @@
 package hamster.model;
 
 import com.google.common.base.Objects;
-import com.google.common.collect.ImmutableList;
-
-import java.util.Collection;
+import com.google.common.base.Preconditions;
 
 public class BonusProgram extends AEntity {
 
     private static final long serialVersionUID = 1L;
 
-    private final Collection<String> merchants;
+    private final String description;
 
-    public BonusProgram(String id, Collection<String> merchants) {
+    public BonusProgram(String id, String description) {
         super(id);
-        if(merchants !=null){
-            this.merchants = ImmutableList.copyOf(merchants);
-        } else {
-            this.merchants = null;
-        }
+        this.description = Preconditions.checkNotNull(description);
     }
 
-    public Collection<String> getMerchants() {
-        return merchants;
+    public String getDescription() {
+        return description;
     }
 
     @Override
     public String toString() {
         return Objects.toStringHelper(this)
                 .add("id", getId())
-                .add("merchants", merchants)
+                .add("description", description)
                 .toString();
     }
 
