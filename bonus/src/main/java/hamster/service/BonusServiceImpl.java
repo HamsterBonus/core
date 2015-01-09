@@ -4,6 +4,7 @@ import com.google.common.base.Preconditions;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
 import hamster.bonus.BonusData;
+import hamster.dao.BonusProgramDao;
 import hamster.dao.BonusProgramMerchantDao;
 import hamster.dao.MerchantDao;
 import hamster.error.SystemException;
@@ -29,13 +30,15 @@ public class BonusServiceImpl implements BonusService {
     private PaymentDao paymentDao;
     private MerchantDao merchantDao;
     private BonusProgramMerchantDao bonusProgramMerchantDao;
-
+    private BonusProgramDao bonusProgramDao;
     public BonusServiceImpl(PaymentDao paymentDao,
                             MerchantDao merchantDao,
-                            BonusProgramMerchantDao bonusProgramMerchantDao) {
+                            BonusProgramMerchantDao bonusProgramMerchantDao,
+                            BonusProgramDao bonusProgramDao) {
         this.paymentDao = Preconditions.checkNotNull(paymentDao);
         this.merchantDao = Preconditions.checkNotNull(merchantDao);
-        this.bonusProgramMerchantDao = bonusProgramMerchantDao;
+        this.bonusProgramMerchantDao = Preconditions.checkNotNull(bonusProgramMerchantDao);
+        this.bonusProgramDao = Preconditions.checkNotNull(bonusProgramDao);
     }
 
     @Override
@@ -56,7 +59,7 @@ public class BonusServiceImpl implements BonusService {
         if(CollectionUtils.isEmpty(programs)){
             throw new SystemException("The list of bonus programs for merchant " + merchant.getId() + " is empty");
         }
-        BonusProgramMerchant program = Iterables.find(
+        BonusProgramMerchant pm = Iterables.find(
                 programs,
                 new Predicate<BonusProgramMerchant>(){
                     @Override
@@ -67,9 +70,10 @@ public class BonusServiceImpl implements BonusService {
                     }
                 }
         );
-        if(program == null){
+        if(pm == null){
             throw new ValidationException("Can't choose active program");
         }
+        BonusProgram program = bonusProgramDao.findOne(pm.getProgram());
         // calculate bonus amount if value is empty using bonus program data
         // check merchant balance
         // save payment bonus

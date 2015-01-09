@@ -1,5 +1,6 @@
 package hamster.spring;
 
+import hamster.dao.BonusProgramDao;
 import hamster.dao.BonusProgramMerchantDao;
 import hamster.dao.MerchantDao;
 import hamster.module.SqlScript;
@@ -22,10 +23,12 @@ public class CoreBonusConfig {
     MerchantDao merchantDao;
     @Autowired
     BonusProgramMerchantDao bonusProgramMerchantDao;
+    @Autowired
+    BonusProgramDao bonusProgramDao;
 
 	@Bean
 	public BonusService bonusService(){
-		return new BonusServiceImpl(paymentDao, merchantDao, bonusProgramMerchantDao);
+		return new BonusServiceImpl(paymentDao, merchantDao, bonusProgramMerchantDao, bonusProgramDao);
 	}
 
     @Bean
