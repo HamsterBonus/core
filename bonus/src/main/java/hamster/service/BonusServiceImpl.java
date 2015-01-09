@@ -1,22 +1,27 @@
 package hamster.service;
 
 import com.google.common.base.Preconditions;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Iterables;
 import hamster.bonus.BonusData;
 import hamster.dao.BonusProgramMerchantDao;
 import hamster.dao.MerchantDao;
+import hamster.error.SystemException;
 import hamster.model.*;
 import hamster.payment.PaymentBuilder;
 import hamster.dao.PaymentDao;
 import hamster.validation.ValidationException;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.util.CollectionUtils;
 
 import java.util.Collection;
 
 /*
-dao interface
 start method
 test refactoring
+code refactoring - command,dao interface
 tx tests
-error code foe exception
+error code for exception
 confirm method with security tests
  */
 public class BonusServiceImpl implements BonusService {
@@ -34,7 +39,7 @@ public class BonusServiceImpl implements BonusService {
     }
 
     @Override
-	public PaymentBonus start(BonusData data) {
+	public PaymentBonus start(final BonusData data) {
         //todo: Action and Chain
         // check data values
         data.validate();
@@ -48,8 +53,25 @@ public class BonusServiceImpl implements BonusService {
         }
         // choose bonus program or check that program exists
         Collection<BonusProgramMerchant> programs = bonusProgramMerchantDao.findByMerchant(merchant.getId());
-
-        // calculate bonus amount if value is empty and check merchant balance
+        if(CollectionUtils.isEmpty(programs)){
+            throw new SystemException("The list of bonus programs for merchant " + merchant.getId() + " is empty");
+        }
+        BonusProgramMerchant program = Iterables.find(
+                programs,
+                new Predicate<BonusProgramMerchant>(){
+                    @Override
+                    public boolean apply(BonusProgramMerchant input) {
+                        return StringUtils.isEmpty(data.getProgram())
+                                ? input.isByDefault()
+                                : data.getProgram().equals(input.getProgram());
+                    }
+                }
+        );
+        if(program == null){
+            throw new ValidationException("Can't choose active program");
+        }
+        // calculate bonus amount if value is empty using bonus program data
+        // check merchant balance
         // save payment bonus
 		return new PaymentBonus("1", payment.getId(), null, data.getAmount());
 	}
