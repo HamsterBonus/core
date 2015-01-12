@@ -3,21 +3,21 @@ package hamster.model;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 
-public class MerchantBalance extends AEntity {
+public class PartnerBalance extends AEntity {
 
     private static final long serialVersionUID = 1L;
 
-    private final String merchant;
+    private final String partner;
     private final String balance;
 
-    public MerchantBalance(String id, String merchant, String balance) {
+    public PartnerBalance(String id, String partner, String balance) {
         super(id);
-        this.merchant = Preconditions.checkNotNull(merchant);
+        this.partner = Preconditions.checkNotNull(partner);
         this.balance = Preconditions.checkNotNull(balance);
     }
 
-    public String getMerchant() {
-        return merchant;
+    public String getPartner() {
+        return partner;
     }
 
     public String getBalance() {
@@ -28,7 +28,7 @@ public class MerchantBalance extends AEntity {
     public String toString() {
         return Objects.toStringHelper(this)
                 .add("id", getId())
-                .add("merchant", merchant)
+                .add("partner", partner)
                 .add("balance", balance)
                 .toString();
     }

@@ -50,7 +50,7 @@ public class BonusServiceImpl implements BonusService {
         Amount bonusAmount = bonusAmountCalculator.calculate(data, merchant.getId());
         // check merchant balance
         // save payment bonus
-		return new PaymentBonus("1", payment.getId(), null, data.getAmount());
+		return new PaymentBonus("1", payment.getId(), null, bonusAmount);
 	}
 
 	@Override

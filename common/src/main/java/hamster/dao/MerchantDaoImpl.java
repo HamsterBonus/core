@@ -22,6 +22,7 @@ public class MerchantDaoImpl extends JdbcRepository<Merchant, String> implements
         public Merchant mapRow(ResultSet rs, int rowNum) throws SQLException {
             return new Merchant(
                     rs.getString("id"),
+                    rs.getString("partner"),
                     Enums.getIfPresent(MerchantState.class, rs.getString("state_id")).orNull()
             );
         }
@@ -31,6 +32,7 @@ public class MerchantDaoImpl extends JdbcRepository<Merchant, String> implements
         @Override
         public Map<String, Object> mapColumns(Merchant merchant) {
             return Utils.ColumnsBuilder.create()
+                    .add("partner", merchant.getPartner())
                     .add("state", merchant.getState().getId())
                     .build();
         }
