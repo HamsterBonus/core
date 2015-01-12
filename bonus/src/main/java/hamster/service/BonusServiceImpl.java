@@ -1,21 +1,14 @@
 package hamster.service;
 
 import com.google.common.base.Preconditions;
-import com.google.common.base.Predicate;
-import com.google.common.collect.Iterables;
+import hamster.bonus.AmountCalculator;
 import hamster.bonus.BonusData;
-import hamster.dao.BonusProgramDao;
-import hamster.dao.BonusProgramMerchantDao;
+import hamster.bonus.ProgramChooser;
 import hamster.dao.MerchantDao;
-import hamster.error.SystemException;
 import hamster.model.*;
 import hamster.payment.PaymentBuilder;
 import hamster.dao.PaymentDao;
 import hamster.validation.ValidationException;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.util.CollectionUtils;
-
-import java.util.Collection;
 
 /*
 start method
@@ -24,21 +17,21 @@ code refactoring - command,dao interface
 tx tests
 error code for exception
 confirm method with security tests
+partner parameter instead of merchant, merchant is additional and optional( partner balance instead of merchant balance)
+merchant state TEST
  */
 public class BonusServiceImpl implements BonusService {
 
     private PaymentDao paymentDao;
     private MerchantDao merchantDao;
-    private BonusProgramMerchantDao bonusProgramMerchantDao;
-    private BonusProgramDao bonusProgramDao;
+    private AmountCalculator bonusAmountCalculator;
+
     public BonusServiceImpl(PaymentDao paymentDao,
                             MerchantDao merchantDao,
-                            BonusProgramMerchantDao bonusProgramMerchantDao,
-                            BonusProgramDao bonusProgramDao) {
+                            AmountCalculator bonusAmountCalculator) {
         this.paymentDao = Preconditions.checkNotNull(paymentDao);
         this.merchantDao = Preconditions.checkNotNull(merchantDao);
-        this.bonusProgramMerchantDao = Preconditions.checkNotNull(bonusProgramMerchantDao);
-        this.bonusProgramDao = Preconditions.checkNotNull(bonusProgramDao);
+        this.bonusAmountCalculator = Preconditions.checkNotNull(bonusAmountCalculator);
     }
 
     @Override
@@ -49,32 +42,13 @@ public class BonusServiceImpl implements BonusService {
         // save payment
         Payment payment = paymentDao.save(PaymentBuilder.create(data.getPayment()).build());
         // check merchant status
-        Merchant merchant = merchantDao.findOne(data.getPayment().getMerchant());
+        final Merchant merchant = merchantDao.findOne(data.getPayment().getMerchant());
         if(merchant == null
                 || !MerchantState.ACTIVE.equals(merchant.getState())){
             throw new ValidationException("Merchant id is incorrect");
         }
-        // choose bonus program or check that program exists
-        Collection<BonusProgramMerchant> programs = bonusProgramMerchantDao.findByMerchant(merchant.getId());
-        if(CollectionUtils.isEmpty(programs)){
-            throw new SystemException("The list of bonus programs for merchant " + merchant.getId() + " is empty");
-        }
-        BonusProgramMerchant pm = Iterables.find(
-                programs,
-                new Predicate<BonusProgramMerchant>(){
-                    @Override
-                    public boolean apply(BonusProgramMerchant input) {
-                        return StringUtils.isEmpty(data.getProgram())
-                                ? input.isByDefault()
-                                : data.getProgram().equals(input.getProgram());
-                    }
-                }
-        );
-        if(pm == null){
-            throw new ValidationException("Can't choose active program");
-        }
-        BonusProgram program = bonusProgramDao.findOne(pm.getProgram());
-        // calculate bonus amount if value is empty using bonus program data
+        // calculate bonus amount
+        Amount bonusAmount = bonusAmountCalculator.calculate(data, merchant.getId());
         // check merchant balance
         // save payment bonus
 		return new PaymentBonus("1", payment.getId(), null, data.getAmount());

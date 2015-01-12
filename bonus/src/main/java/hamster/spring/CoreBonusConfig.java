@@ -1,5 +1,7 @@
 package hamster.spring;
 
+import hamster.bonus.SimpleAmountCalculator;
+import hamster.bonus.SimpleProgramChooser;
 import hamster.dao.BonusProgramDao;
 import hamster.dao.BonusProgramMerchantDao;
 import hamster.dao.MerchantDao;
@@ -28,7 +30,11 @@ public class CoreBonusConfig {
 
 	@Bean
 	public BonusService bonusService(){
-		return new BonusServiceImpl(paymentDao, merchantDao, bonusProgramMerchantDao, bonusProgramDao);
+		return new BonusServiceImpl(
+                        paymentDao,
+                        merchantDao,
+                        new SimpleAmountCalculator(bonusProgramMerchantDao, new SimpleProgramChooser(bonusProgramDao))
+        );
 	}
 
     @Bean
