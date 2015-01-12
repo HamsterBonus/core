@@ -3,7 +3,6 @@ package hamster.service;
 import com.google.common.base.Preconditions;
 import hamster.bonus.AmountCalculator;
 import hamster.bonus.BonusData;
-import hamster.bonus.ProgramChooser;
 import hamster.dao.MerchantDao;
 import hamster.model.*;
 import hamster.payment.PaymentBuilder;
@@ -13,7 +12,7 @@ import hamster.validation.ValidationException;
 /*
 start method
 test refactoring
-code refactoring - command,dao interface
+code refactoring - command
 tx tests
 error code for exception
 confirm method with security tests
