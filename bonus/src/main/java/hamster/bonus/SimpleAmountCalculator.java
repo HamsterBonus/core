@@ -1,6 +1,7 @@
 package hamster.bonus;
 
 import com.google.common.base.Preconditions;
+import hamster.balance.AmountBuilder;
 import hamster.dao.BonusProgramMerchantDao;
 import hamster.error.SystemException;
 import hamster.model.Amount;
@@ -29,6 +30,13 @@ public class SimpleAmountCalculator implements AmountCalculator {
         }
         BonusProgram program = programChooser.get(programs, data);
         // calculate bonus amount if value is empty using bonus program data or it's not possible to change program value
-        return null;
+        if(program.isCanBeChanged()
+                && !data.getAmount().isEmpty()){
+            return data.getAmount();
+        }
+        return AmountBuilder.create(data.getPayment().getAmount())
+                .multiply()
+                    .value(program.getPercent())
+                        .build();
     }
 }

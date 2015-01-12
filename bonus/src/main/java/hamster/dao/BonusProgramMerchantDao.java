@@ -34,7 +34,7 @@ public class BonusProgramMerchantDao  extends JdbcRepository<BonusProgramMerchan
             return Utils.ColumnsBuilder.create()
                     .add("program", bpm.getProgram())
                     .add("merchant", bpm.getMerchant())
-                    .add("by_default", bpm.isByDefault() ? "1" : "0")
+                    .add("by_default", bpm.isByDefault())
                     .build();
         }
     };

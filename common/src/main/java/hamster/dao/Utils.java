@@ -38,6 +38,11 @@ public class Utils {
             return this;
         }
 
+        public ColumnsBuilder add(String key, boolean value){
+            data.put(key, value ? "1" : "0");
+            return this;
+        }
+
         public ColumnsBuilder add(Amount amount){
             data.put("amount_value", amount.getDoubleValue());
             data.put("amount_currency", amount.getCurrencyCode());
