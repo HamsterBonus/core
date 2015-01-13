@@ -19,9 +19,7 @@ public class CoreBonusConfig {
     @Autowired
     PaymentDao paymentDao;
     @Autowired
-    MerchantDao merchantDao;
-    @Autowired
-    BonusProgramMerchantDao bonusProgramMerchantDao;
+    BonusProgramPartnerDao bonusProgramPartnerDao;
     @Autowired
     BonusProgramDao bonusProgramDao;
     @Autowired
@@ -32,9 +30,8 @@ public class CoreBonusConfig {
 	public BonusService bonusService(){
 		return new BonusServiceImpl(
                         paymentDao,
-                        merchantDao,
                         partnerDao,
-                        new SimpleAmountCalculator(bonusProgramMerchantDao, new SimpleProgramChooser(bonusProgramDao))
+                        new SimpleAmountCalculator(bonusProgramPartnerDao, new SimpleProgramChooser(bonusProgramDao))
         );
 	}
 

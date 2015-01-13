@@ -23,6 +23,7 @@ public class PaymentDaoImpl extends JdbcRepository<Payment, String> implements P
         public Payment mapRow(ResultSet rs, int rowNum) throws SQLException {
             return new Payment(
                     rs.getString("id"),
+                    rs.getString("partner"),
                     rs.getString("merchant"),
                     rs.getString("transaction"),
                     createAmount(rs)
@@ -35,6 +36,7 @@ public class PaymentDaoImpl extends JdbcRepository<Payment, String> implements P
         public Map<String, Object> mapColumns(Payment payment) {
             return ColumnsBuilder.create()
                     .add("merchant", payment.getMerchant())
+                    .add("partner", payment.getPartner())
                     .add("transaction", payment.getTransaction())
                     .add(payment.getAmount())
                     .build();

@@ -39,7 +39,6 @@
     <modules>
         <module>common</module>
         <module>bonus</module>
-        <module>partner</module>
         <module>social</module>
         <module>test</module>
     </modules>

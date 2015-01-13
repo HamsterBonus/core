@@ -5,7 +5,7 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
 import hamster.dao.BonusProgramDao;
 import hamster.model.BonusProgram;
-import hamster.model.BonusProgramMerchant;
+import hamster.model.BonusProgramPartner;
 import hamster.validation.ValidationException;
 import org.apache.commons.lang3.StringUtils;
 
@@ -20,12 +20,12 @@ public class SimpleProgramChooser implements ProgramChooser {
     }
 
     @Override
-    public BonusProgram get(Collection<BonusProgramMerchant> programs, final BonusData data) {
-        BonusProgramMerchant pm = Iterables.find(
+    public BonusProgram get(Collection<BonusProgramPartner> programs, final BonusData data) {
+        BonusProgramPartner pm = Iterables.find(
                 programs,
-                new Predicate<BonusProgramMerchant>() {
+                new Predicate<BonusProgramPartner>() {
                     @Override
-                    public boolean apply(BonusProgramMerchant input) {
+                    public boolean apply(BonusProgramPartner input) {
                         return StringUtils.isEmpty(data.getProgram())
                                 ? input.isByDefault()
                                 : data.getProgram().equals(input.getProgram());

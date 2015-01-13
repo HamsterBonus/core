@@ -18,7 +18,7 @@ public class BonusServiceTest extends AServiceTest {
 	public void testCorrectStart(){
         BonusData data = new BonusData();
         data.getPayment()
-                .setMerchant(Dictionary.MERCHANT_ACTIVE_ID)
+                .setPartner(Dictionary.PARTNER_ACTIVE_ID)
                 .setAmountValue("1")
                 .setAmountCurrency("RUB");
 		PaymentBonus bonus = bonusService.start(data);
@@ -27,10 +27,10 @@ public class BonusServiceTest extends AServiceTest {
 	}
 
     @Test
-    public void testStartForDisabledMerchant(){
+    public void testStartForDisabledPartner(){
         BonusData data = new BonusData();
         data.getPayment()
-                .setMerchant(Dictionary.MERCHANT_DISABLED_ID)
+                .setPartner(Dictionary.PARTNER_DISABLED_ID)
                 .setAmountValue("1")
                 .setAmountCurrency("RUB");
         try{
@@ -44,7 +44,7 @@ public class BonusServiceTest extends AServiceTest {
     }
 
     @Test
-    public void testEmptyMerchant(){
+    public void testEmptyPartner(){
         BonusData data = new BonusData();
         data.getPayment()
                 .setAmountValue("1")
@@ -65,7 +65,7 @@ public class BonusServiceTest extends AServiceTest {
         //todo: check negative value
         BonusData data = new BonusData();
         data.getPayment()
-                .setMerchant(Dictionary.MERCHANT_ACTIVE_ID);
+                .setPartner(Dictionary.PARTNER_ACTIVE_ID);
         try{
             bonusService.start(data);
             assertTrue(false);

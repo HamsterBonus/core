@@ -1,12 +1,12 @@
 package hamster.bonus;
 
 import hamster.model.BonusProgram;
-import hamster.model.BonusProgramMerchant;
+import hamster.model.BonusProgramPartner;
 
 import java.util.Collection;
 
 public interface ProgramChooser {
 
-    BonusProgram get(Collection<BonusProgramMerchant> programs, BonusData data);
+    BonusProgram get(Collection<BonusProgramPartner> programs, BonusData data);
 
 }

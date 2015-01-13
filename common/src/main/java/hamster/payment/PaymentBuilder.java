@@ -6,6 +6,7 @@ import hamster.model.Payment;
 public class PaymentBuilder {
 
     private String id;
+    private String partner;
     private String merchant;
     private String transaction;
     private Amount amount;
@@ -17,6 +18,7 @@ public class PaymentBuilder {
     public static PaymentBuilder create(PaymentData data){
         return create()
                 .merchant(data.getMerchant())
+                .partner(data.getPartner())
                 .transaction(data.getTransaction())
                 .amount(data.getAmount())
         ;
@@ -24,6 +26,7 @@ public class PaymentBuilder {
 
     public static PaymentBuilder create(Payment payment){
         return create()
+                .partner(payment.getPartner())
                 .merchant(payment.getMerchant())
                 .transaction(payment.getTransaction())
                 .amount(payment.getAmount())
@@ -40,6 +43,11 @@ public class PaymentBuilder {
         return this;
     }
 
+    public PaymentBuilder partner(String partner) {
+        this.partner = partner;
+        return this;
+    }
+
     public PaymentBuilder transaction(String transaction) {
         this.transaction = transaction;
         return this;
@@ -51,6 +59,6 @@ public class PaymentBuilder {
     }
 
     public Payment build(){
-        return new Payment(id, merchant, transaction, amount);
+        return new Payment(id, partner, merchant, transaction, amount);
     }
 }

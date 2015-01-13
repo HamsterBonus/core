@@ -3,40 +3,40 @@ package hamster.model;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 
-public class BonusProgramMerchant extends AEntity {
+public class PartnerMerchant extends AEntity {
 
     private static final long serialVersionUID = 1L;
 
-    private final String program;
+    private final String parent;
     private final String merchant;
-    private boolean byDefault;
+    private final String partner;
 
-    public BonusProgramMerchant(String id, String program, String merchant, boolean byDefault) {
+    public PartnerMerchant(String id, String parent, String merchant, String partner) {
         super(id);
-        this.program = Preconditions.checkNotNull(program);
+        this.parent = Preconditions.checkNotNull(parent);
         this.merchant = Preconditions.checkNotNull(merchant);
-        this.byDefault = byDefault;
+        this.partner = Preconditions.checkNotNull(partner);
     }
 
-    public String getProgram() {
-        return program;
+    public String getParent() {
+        return parent;
     }
 
     public String getMerchant() {
         return merchant;
     }
 
-    public boolean isByDefault() {
-        return byDefault;
+    public String getPartner() {
+        return partner;
     }
 
     @Override
     public String toString() {
         return Objects.toStringHelper(this)
                 .add("id", getId())
-                .add("program", program)
+                .add("partner", partner)
                 .add("merchant", merchant)
-                .add("default", byDefault)
+                .add("parent", parent)
                 .toString();
     }
 

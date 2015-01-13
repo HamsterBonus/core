@@ -10,9 +10,19 @@ public class PaymentData implements Data<PaymentData> {
 
     private static final long serialVersionUID = 1L;
 
+    private String partner;
     private String merchant;
     private String transaction;
     private AmountBuilder amount = AmountBuilder.create();
+
+    public String getPartner() {
+        return partner;
+    }
+
+    public PaymentData setPartner(String partner) {
+        this.partner = partner;
+        return this;
+    }
 
     public String getMerchant() {
         return merchant;
@@ -48,7 +58,7 @@ public class PaymentData implements Data<PaymentData> {
 
     @Override
     public PaymentData validate() {
-        if(StringUtils.isEmpty(merchant)
+        if(StringUtils.isEmpty(partner)
                 || getAmount().isEmpty()){
             throw new ValidationException("Error while payment creation data validation");
         }

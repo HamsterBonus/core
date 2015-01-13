@@ -7,18 +7,24 @@ public class Payment extends AEntity {
 
 	private static final long serialVersionUID = 1L;
 
+    private final String partner;
 	private final String merchant;
 	private final String transaction;
 	private final Amount amount;
 
-	public Payment(String id, String merchant, String transaction, Amount amount) {
+	public Payment(String id, String partner, String merchant, String transaction, Amount amount) {
 		super(id);
-		this.merchant = Preconditions.checkNotNull(merchant);
+		this.partner = Preconditions.checkNotNull(partner);
+        this.merchant = merchant;
 		this.transaction = transaction;
 		this.amount = Preconditions.checkNotNull(amount);
 	}
 
-	public String getMerchant() {
+    public String getPartner() {
+        return partner;
+    }
+
+    public String getMerchant() {
 		return merchant;
 	}
 
