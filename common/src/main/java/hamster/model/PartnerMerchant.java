@@ -10,12 +10,14 @@ public class PartnerMerchant extends AEntity {
     private final String parent;
     private final String merchant;
     private final String partner;
+    private final boolean useMerchantBalance;
 
-    public PartnerMerchant(String id, String parent, String merchant, String partner) {
+    public PartnerMerchant(String id, String parent, String merchant, String partner, boolean useMerchantBalance) {
         super(id);
         this.parent = Preconditions.checkNotNull(parent);
         this.merchant = Preconditions.checkNotNull(merchant);
         this.partner = Preconditions.checkNotNull(partner);
+        this.useMerchantBalance = useMerchantBalance;
     }
 
     public String getParent() {
@@ -30,6 +32,10 @@ public class PartnerMerchant extends AEntity {
         return partner;
     }
 
+    public boolean isUseMerchantBalance() {
+        return useMerchantBalance;
+    }
+
     @Override
     public String toString() {
         return Objects.toStringHelper(this)
@@ -37,6 +43,7 @@ public class PartnerMerchant extends AEntity {
                 .add("partner", partner)
                 .add("merchant", merchant)
                 .add("parent", parent)
+                .add("useMerchantBalance", useMerchantBalance)
                 .toString();
     }
 

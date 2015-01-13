@@ -6,6 +6,8 @@ import hamster.model.Amount;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 public class Utils {
@@ -18,6 +20,10 @@ public class Utils {
                     .value(rs.getString("amount_value"))
                     .currency(rs.getString("amount_currency"))
         .build();
+    }
+
+    public static <T> T choose(List<T> entityOrEmpty){
+        return entityOrEmpty.isEmpty() ? null : entityOrEmpty.get(0);
     }
 
     //ImmutableMap does not support null values
