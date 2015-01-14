@@ -27,12 +27,17 @@ public class CoreBonusConfig {
     PartnerDao partnerDao;
     @Autowired
     PartnerMerchantDao partnerMerchantDao;
-
+    @Autowired
+    PartnerBalanceDao partnerBalanceDao;
+    @Autowired
+    BalanceDao balanceDao;
 
 	@Bean
 	public BonusService bonusService(){
 		return new BonusServiceImpl(
                         paymentDao,
+                        partnerBalanceDao,
+                        balanceDao,
                         new SimplePartnerChooser(partnerDao, partnerMerchantDao),
                         new SimpleAmountCalculator(bonusProgramPartnerDao, new SimpleProgramChooser(bonusProgramDao))
         );

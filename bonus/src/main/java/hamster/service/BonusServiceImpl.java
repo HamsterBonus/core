@@ -1,19 +1,23 @@
 package hamster.service;
 
 import com.google.common.base.Preconditions;
+import hamster.balance.AmountBuilder;
 import hamster.bonus.AmountCalculator;
 import hamster.bonus.BonusData;
 import hamster.bonus.PartnerChooser;
-import hamster.dao.PartnerDao;
+import hamster.dao.BalanceDao;
+import hamster.dao.PartnerBalanceDao;
 import hamster.model.*;
 import hamster.payment.PaymentBuilder;
 import hamster.dao.PaymentDao;
-import hamster.validation.ValidationException;
+
+import java.util.Collection;
+import java.util.Currency;
 
 /*
 start method
 test refactoring
-code refactoring - command
+code refactoring - command, java8 functions
 tx tests
 error code for exception
 confirm method with security tests
@@ -23,13 +27,19 @@ public class BonusServiceImpl implements BonusService {
 
     private PaymentDao paymentDao;
     private PartnerChooser partnerChooser;
+    private PartnerBalanceDao partnerBalanceDao;
+    private BalanceDao balanceDao;
     private AmountCalculator bonusAmountCalculator;
 
     public BonusServiceImpl(PaymentDao paymentDao,
+                            PartnerBalanceDao partnerBalanceDao,
+                            BalanceDao balanceDao,
                             PartnerChooser partnerChooser,
                             AmountCalculator bonusAmountCalculator) {
         this.paymentDao = Preconditions.checkNotNull(paymentDao);
         this.partnerChooser = Preconditions.checkNotNull(partnerChooser);
+        this.partnerBalanceDao = Preconditions.checkNotNull(partnerBalanceDao);
+        this.balanceDao = Preconditions.checkNotNull(balanceDao);
         this.bonusAmountCalculator = Preconditions.checkNotNull(bonusAmountCalculator);
     }
 
@@ -44,10 +54,28 @@ public class BonusServiceImpl implements BonusService {
         // calculate bonus amount
         Amount bonusAmount = bonusAmountCalculator.calculate(data, partner.getId());
         // check partner balance
+        Collection<PartnerBalance> balances = partnerBalanceDao.findByPartner(partner.getId());
+        //todo: make it more efficient
+        Balance balance = findPartnerBalance(partner.getId(), bonusAmount.getCurrency());
+        if(balance == null
+                || !AmountBuilder.create(balance.getActiveValue()).reduce(bonusAmount).build().isSign()){
+            //todo: throw exception
+        }
         // save payment bonus
 		return new PaymentBonus("1", payment.getId(), null, bonusAmount);
 	}
 
+    private Balance findPartnerBalance(String partner, Currency c){
+        Collection<PartnerBalance> balances = partnerBalanceDao.findByPartner(partner);
+        //todo: make it more efficient
+        for(PartnerBalance b : balances){
+            Balance balance = balanceDao.findOne(b.getBalance());
+            if(c.equals(balance.getActiveValue().getCurrency())){
+                return balance;
+            }
+        }
+        return null;
+    }
 	@Override
 	public Transaction linkUser(String bonus, Account account) {
         // check user exists
