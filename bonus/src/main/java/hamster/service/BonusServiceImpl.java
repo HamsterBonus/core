@@ -5,6 +5,7 @@ import hamster.balance.AmountBuilder;
 import hamster.bonus.AmountCalculator;
 import hamster.bonus.BonusData;
 import hamster.bonus.PartnerChooser;
+import hamster.bonus.PartnerPossibility;
 import hamster.dao.BalanceDao;
 import hamster.dao.PartnerBalanceDao;
 import hamster.model.*;
@@ -27,19 +28,16 @@ public class BonusServiceImpl implements BonusService {
 
     private PaymentDao paymentDao;
     private PartnerChooser partnerChooser;
-    private PartnerBalanceDao partnerBalanceDao;
-    private BalanceDao balanceDao;
+    private PartnerPossibility partnerPossibility;
     private AmountCalculator bonusAmountCalculator;
 
     public BonusServiceImpl(PaymentDao paymentDao,
-                            PartnerBalanceDao partnerBalanceDao,
-                            BalanceDao balanceDao,
+                            PartnerPossibility partnerPossibility,
                             PartnerChooser partnerChooser,
                             AmountCalculator bonusAmountCalculator) {
         this.paymentDao = Preconditions.checkNotNull(paymentDao);
         this.partnerChooser = Preconditions.checkNotNull(partnerChooser);
-        this.partnerBalanceDao = Preconditions.checkNotNull(partnerBalanceDao);
-        this.balanceDao = Preconditions.checkNotNull(balanceDao);
+        this.partnerPossibility = Preconditions.checkNotNull(partnerPossibility);
         this.bonusAmountCalculator = Preconditions.checkNotNull(bonusAmountCalculator);
     }
 
@@ -53,29 +51,12 @@ public class BonusServiceImpl implements BonusService {
         Partner partner = partnerChooser.get(data);
         // calculate bonus amount
         Amount bonusAmount = bonusAmountCalculator.calculate(data, partner.getId());
-        // check partner balance
-        Collection<PartnerBalance> balances = partnerBalanceDao.findByPartner(partner.getId());
-        //todo: make it more efficient
-        Balance balance = findPartnerBalance(partner.getId(), bonusAmount.getCurrency());
-        if(balance == null
-                || balance.getActiveValue().compareTo(bonusAmount) < 0){
-            //todo: throw exception
-        }
+        // check partner
+        partnerPossibility.check(partner.getId(), bonusAmount);
         // save payment bonus
 		return new PaymentBonus("1", payment.getId(), null, bonusAmount);
 	}
 
-    private Balance findPartnerBalance(String partner, Currency c){
-        Collection<PartnerBalance> balances = partnerBalanceDao.findByPartner(partner);
-        //todo: make it more efficient
-        for(PartnerBalance b : balances){
-            Balance balance = balanceDao.findOne(b.getBalance());
-            if(c.equals(balance.getActiveValue().getCurrency())){
-                return balance;
-            }
-        }
-        return null;
-    }
 	@Override
 	public Transaction linkUser(String bonus, Account account) {
         // check user exists
