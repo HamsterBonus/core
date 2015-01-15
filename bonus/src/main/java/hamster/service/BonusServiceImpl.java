@@ -17,7 +17,6 @@ import java.util.Collection;
 import java.util.Currency;
 
 /*
-start method
 test refactoring
 code refactoring - command, java8 functions
 tx tests
