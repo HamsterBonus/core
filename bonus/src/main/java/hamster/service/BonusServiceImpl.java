@@ -8,6 +8,7 @@ import hamster.bonus.PartnerChooser;
 import hamster.bonus.PartnerPossibility;
 import hamster.dao.BalanceDao;
 import hamster.dao.PartnerBalanceDao;
+import hamster.dao.PaymentBonusDao;
 import hamster.model.*;
 import hamster.payment.PaymentBuilder;
 import hamster.dao.PaymentDao;
@@ -30,15 +31,18 @@ public class BonusServiceImpl implements BonusService {
     private PartnerChooser partnerChooser;
     private PartnerPossibility partnerPossibility;
     private AmountCalculator bonusAmountCalculator;
+    private PaymentBonusDao paymentBonusDao;
 
     public BonusServiceImpl(PaymentDao paymentDao,
                             PartnerPossibility partnerPossibility,
                             PartnerChooser partnerChooser,
-                            AmountCalculator bonusAmountCalculator) {
+                            AmountCalculator bonusAmountCalculator,
+                            PaymentBonusDao paymentBonusDao) {
         this.paymentDao = Preconditions.checkNotNull(paymentDao);
         this.partnerChooser = Preconditions.checkNotNull(partnerChooser);
         this.partnerPossibility = Preconditions.checkNotNull(partnerPossibility);
         this.bonusAmountCalculator = Preconditions.checkNotNull(bonusAmountCalculator);
+        this.paymentBonusDao =Preconditions.checkNotNull(paymentBonusDao);
     }
 
     @Override
@@ -54,7 +58,7 @@ public class BonusServiceImpl implements BonusService {
         // check partner
         partnerPossibility.check(partner.getId(), bonusAmount);
         // save payment bonus
-		return new PaymentBonus("1", payment.getId(), null, bonusAmount);
+        return paymentBonusDao.save(new PaymentBonus(null, payment.getId(), null, bonusAmount));
 	}
 
 	@Override

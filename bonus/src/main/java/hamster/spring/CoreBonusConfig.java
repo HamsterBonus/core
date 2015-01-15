@@ -30,6 +30,8 @@ public class CoreBonusConfig {
     PartnerBalanceDao partnerBalanceDao;
     @Autowired
     BalanceDao balanceDao;
+    @Autowired
+    PaymentBonusDao paymentBonusDao;
 
 	@Bean
 	public BonusService bonusService(){
@@ -37,7 +39,8 @@ public class CoreBonusConfig {
                         paymentDao,
                         new SimplePartnerPossibility(partnerBalanceDao, balanceDao),
                         new SimplePartnerChooser(partnerDao, partnerMerchantDao),
-                        new SimpleAmountCalculator(bonusProgramPartnerDao, new SimpleProgramChooser(bonusProgramDao))
+                        new SimpleAmountCalculator(bonusProgramPartnerDao, new SimpleProgramChooser(bonusProgramDao)),
+                        paymentBonusDao
         );
 	}
 

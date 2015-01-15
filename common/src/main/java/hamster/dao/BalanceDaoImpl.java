@@ -21,7 +21,7 @@ public class BalanceDaoImpl extends JdbcRepository<Balance, String> implements B
         public Balance mapRow(ResultSet rs, int rowNum) throws SQLException {
             return new Balance(
                     rs.getString("id"),
-                    AmountBuilder.create().value(rs.getString("amount_value")).currency(rs.getString("amount_currency")).build(),
+                    Utils.createAmount(rs),
                     AmountBuilder.create().value(rs.getString("hold_amount_value")).currency(rs.getString("amount_currency")).build()
             );
         }
