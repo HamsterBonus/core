@@ -58,7 +58,7 @@ public class BonusServiceImpl implements BonusService {
         //todo: make it more efficient
         Balance balance = findPartnerBalance(partner.getId(), bonusAmount.getCurrency());
         if(balance == null
-                || !AmountBuilder.create(balance.getActiveValue()).reduce(bonusAmount).build().isSign()){
+                || balance.getActiveValue().compareTo(bonusAmount) < 0){
             //todo: throw exception
         }
         // save payment bonus
