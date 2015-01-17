@@ -3,7 +3,7 @@ package hamster.model;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 
-public class BonusProgramPartner extends AEntity {
+public class ProgramPartner extends AEntity {
 
     private static final long serialVersionUID = 1L;
 
@@ -11,7 +11,7 @@ public class BonusProgramPartner extends AEntity {
     private final String partner;
     private boolean byDefault;
 
-    public BonusProgramPartner(String id, String program, String partner, boolean byDefault) {
+    public ProgramPartner(String id, String program, String partner, boolean byDefault) {
         super(id);
         this.program = Preconditions.checkNotNull(program);
         this.partner = Preconditions.checkNotNull(partner);

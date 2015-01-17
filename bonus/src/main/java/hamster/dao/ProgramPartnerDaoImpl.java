@@ -3,7 +3,7 @@ package hamster.dao;
 import com.nurkiewicz.jdbcrepository.JdbcRepository;
 import com.nurkiewicz.jdbcrepository.RowUnmapper;
 import com.nurkiewicz.jdbcrepository.TableDescription;
-import hamster.model.BonusProgramPartner;
+import hamster.model.ProgramPartner;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
@@ -13,13 +13,13 @@ import java.util.Collection;
 import java.util.Map;
 
 @Repository
-public class BonusProgramPartnerDaoImpl extends JdbcRepository<BonusProgramPartner, String> implements BonusProgramPartnerDao {
+public class ProgramPartnerDaoImpl extends JdbcRepository<ProgramPartner, String> implements ProgramPartnerDao {
 
-    public static RowMapper<BonusProgramPartner> rowMapper = new RowMapper<BonusProgramPartner>(){
+    public static RowMapper<ProgramPartner> rowMapper = new RowMapper<ProgramPartner>(){
 
         @Override
-        public BonusProgramPartner mapRow(ResultSet rs, int rowNum) throws SQLException {
-            return new BonusProgramPartner(
+        public ProgramPartner mapRow(ResultSet rs, int rowNum) throws SQLException {
+            return new ProgramPartner(
                     rs.getString("id"),
                     rs.getString("program"),
                     rs.getString("partner"),
@@ -28,9 +28,9 @@ public class BonusProgramPartnerDaoImpl extends JdbcRepository<BonusProgramPartn
         }
     };
 
-    public static RowUnmapper<BonusProgramPartner> rowUnmapper = new RowUnmapper<BonusProgramPartner>(){
+    public static RowUnmapper<ProgramPartner> rowUnmapper = new RowUnmapper<ProgramPartner>(){
         @Override
-        public Map<String, Object> mapColumns(BonusProgramPartner bpm) {
+        public Map<String, Object> mapColumns(ProgramPartner bpm) {
             return Utils.ColumnsBuilder.create()
                     .add("program", bpm.getProgram())
                     .add("partner", bpm.getPartner())
@@ -39,11 +39,11 @@ public class BonusProgramPartnerDaoImpl extends JdbcRepository<BonusProgramPartn
         }
     };
 
-    public BonusProgramPartnerDaoImpl() {
+    public ProgramPartnerDaoImpl() {
         super(rowMapper, rowUnmapper, new TableDescription("bonus_program_partner", null, "id"));
     }
 
-    public Collection<BonusProgramPartner> findByPartner(String partner){
+    public Collection<ProgramPartner> findByPartner(String partner){
         return getJdbcOperations().query("select bpm.* from bonus_program_partner bpm where bpm.partner = ? ", new Object[]{partner }, rowMapper);
     }
 }
