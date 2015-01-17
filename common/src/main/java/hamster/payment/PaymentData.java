@@ -59,7 +59,7 @@ public class PaymentData implements Data<PaymentData> {
     @Override
     public PaymentData validate() {
         if(StringUtils.isEmpty(partner)
-                || getAmount().isEmpty()){
+                || getAmount().isNegativeOrEmpty()){
             throw new ValidationException("Error while payment creation data validation");
         }
         return this;

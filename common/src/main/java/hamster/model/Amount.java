@@ -45,12 +45,20 @@ public class Amount implements Serializable, Comparable<Amount> {
         return displayValue.doubleValue();
     }
 
-    public boolean isSign() {
+    public boolean isEmpty() {
+        return value.compareTo(BigDecimal.ZERO) == 0;
+    }
+
+    public boolean isPositive() {
+        return value.compareTo(BigDecimal.ZERO) > 0;
+    }
+
+    public boolean isPositiveOrEmpty() {
         return value.compareTo(BigDecimal.ZERO) >= 0;
     }
 
-    public boolean isEmpty() {
-        return value.compareTo(BigDecimal.ZERO) == 0;
+    public boolean isNegativeOrEmpty(){
+        return value.compareTo(BigDecimal.ZERO) <= 0;
     }
 
     public int compareTo(Amount o) {

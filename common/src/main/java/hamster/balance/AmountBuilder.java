@@ -92,7 +92,13 @@ public class AmountBuilder<T extends AmountBuilder<T>> implements Serializable {
 	}
 	
 	public T value(String value){
-		return value(Double.parseDouble(value));
+        try{
+            if(value != null){
+                return value(Double.parseDouble(value));
+            }
+        } catch(NumberFormatException e){
+        }
+		return value(BigDecimal.ZERO);
 	}
 	
 	public T value(double value){
@@ -113,7 +119,7 @@ public class AmountBuilder<T extends AmountBuilder<T>> implements Serializable {
 	}
 	
 	public T currency(String currencyCode){
-		return currency(Currency.getInstance(currencyCode));
+		return currency(currencyCode != null ? Currency.getInstance(currencyCode) : null);
 	}
 	
 	public T currency(Currency currency){
