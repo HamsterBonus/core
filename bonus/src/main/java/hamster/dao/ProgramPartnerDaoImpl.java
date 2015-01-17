@@ -40,10 +40,10 @@ public class ProgramPartnerDaoImpl extends JdbcRepository<ProgramPartner, String
     };
 
     public ProgramPartnerDaoImpl() {
-        super(rowMapper, rowUnmapper, new TableDescription("bonus_program_partner", null, "id"));
+        super(rowMapper, rowUnmapper, new TableDescription("program_partner", null, "id"));
     }
 
     public Collection<ProgramPartner> findByPartner(String partner){
-        return getJdbcOperations().query("select bpm.* from bonus_program_partner bpm where bpm.partner = ? ", new Object[]{partner }, rowMapper);
+        return getJdbcOperations().query("select bpm.* from program_partner bpm where bpm.partner = ? ", new Object[]{partner }, rowMapper);
     }
 }
