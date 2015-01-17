@@ -20,8 +20,8 @@ public class SimplePartnerChooser implements PartnerChooser {
     }
 
     @Override
-    public Partner get(BonusData data) {
-        Partner partner = getAndCheckPartner(data.getPayment().getPartner());
+    public Partner get(BonusData data, String partnerId) {
+        Partner partner = getAndCheckPartner(partnerId);
         if(StringUtils.isEmpty(data.getPayment().getMerchant())){
             return partner;
         }

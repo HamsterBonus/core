@@ -1,20 +1,12 @@
 package hamster.service;
 
 import com.google.common.base.Preconditions;
-import hamster.balance.AmountBuilder;
 import hamster.bonus.AmountCalculator;
 import hamster.bonus.BonusData;
-import hamster.bonus.PartnerChooser;
-import hamster.bonus.PartnerPossibility;
-import hamster.dao.BalanceDao;
-import hamster.dao.PartnerBalanceDao;
 import hamster.dao.PaymentBonusDao;
 import hamster.model.*;
 import hamster.payment.PaymentBuilder;
 import hamster.dao.PaymentDao;
-
-import java.util.Collection;
-import java.util.Currency;
 
 /*
 test refactoring
@@ -27,19 +19,13 @@ partner state TEST
 public class BonusServiceImpl implements BonusService {
 
     private PaymentDao paymentDao;
-    private PartnerChooser partnerChooser;
-    private PartnerPossibility partnerPossibility;
     private AmountCalculator bonusAmountCalculator;
     private PaymentBonusDao paymentBonusDao;
 
     public BonusServiceImpl(PaymentDao paymentDao,
-                            PartnerPossibility partnerPossibility,
-                            PartnerChooser partnerChooser,
                             AmountCalculator bonusAmountCalculator,
                             PaymentBonusDao paymentBonusDao) {
         this.paymentDao = Preconditions.checkNotNull(paymentDao);
-        this.partnerChooser = Preconditions.checkNotNull(partnerChooser);
-        this.partnerPossibility = Preconditions.checkNotNull(partnerPossibility);
         this.bonusAmountCalculator = Preconditions.checkNotNull(bonusAmountCalculator);
         this.paymentBonusDao =Preconditions.checkNotNull(paymentBonusDao);
     }
@@ -50,12 +36,8 @@ public class BonusServiceImpl implements BonusService {
         data.validate();
         // save payment
         Payment payment = paymentDao.save(PaymentBuilder.create(data.getPayment()).build());
-        // choose partner checking status
-        Partner partner = partnerChooser.get(data);
         // calculate bonus amount
-        Amount bonusAmount = bonusAmountCalculator.calculate(data, partner.getId());
-        // check partner
-        partnerPossibility.check(partner.getId(), bonusAmount);
+        Amount bonusAmount = bonusAmountCalculator.calculate(data, data.getPayment().getPartner());
         // save payment bonus
         return paymentBonusDao.save(new PaymentBonus(null, payment.getId(), null, bonusAmount));
 	}

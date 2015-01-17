@@ -22,13 +22,14 @@ public class SimplePartnerPossibility implements PartnerPossibility {
     }
 
     @Override
-    public void check(String partner, Amount bonus) {
+    public Amount check(String partner, Amount bonus) {
         //todo: make it more efficient
         Balance balance = findPartnerBalance(partner, bonus.getCurrency());
         if(balance == null
                 || balance.getActiveValue().compareTo(bonus) < 0){
             //todo: throw exception
         }
+        return bonus;
     }
 
     private Balance findPartnerBalance(String partner, Currency c){

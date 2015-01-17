@@ -37,9 +37,11 @@ public class CoreBonusConfig {
 	public BonusService bonusService(){
 		return new BonusServiceImpl(
                         paymentDao,
-                        new SimplePartnerPossibility(partnerBalanceDao, balanceDao),
-                        new SimplePartnerChooser(partnerDao, partnerMerchantDao),
-                        new SimpleAmountCalculator(bonusProgramPartnerDao, new SimpleProgramChooser(bonusProgramDao)),
+                        new AmountCalculatorDecorator(
+                                new SimplePartnerChooser(partnerDao, partnerMerchantDao),
+                                new SimplePartnerPossibility(partnerBalanceDao, balanceDao),
+                                new SimpleAmountCalculator(bonusProgramPartnerDao, new SimpleProgramChooser(bonusProgramDao))
+                        ),
                         paymentBonusDao
         );
 	}

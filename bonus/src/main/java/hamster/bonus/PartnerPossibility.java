@@ -4,5 +4,5 @@ import hamster.model.Amount;
 
 public interface PartnerPossibility {
 
-    void check(String partner, Amount bonus);
+    Amount check(String partner, Amount bonus);
 }
