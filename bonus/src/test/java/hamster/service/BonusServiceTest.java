@@ -61,7 +61,8 @@ public class BonusServiceTest extends AServiceTest {
     }
 
     private void check(BonusData input, PaymentBonus result){
-        //todo: check count of records in payment and payment_bonus tables
+        //todo: check payment record, compare with input data
+        //todo: check count of records payment_bonus tables
         assertNotNull(result);
         assertNotNull(result.getPayment());
         assertNull(result.getTransaction());
