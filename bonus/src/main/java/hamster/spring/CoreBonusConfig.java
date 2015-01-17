@@ -39,7 +39,7 @@ public class CoreBonusConfig {
                         new AmountCalculatorDecorator(
                                 new SimplePartnerChooser(partnerDao, partnerMerchantDao),
                                 new SimplePartnerPossibility(partnerBalanceDao, balanceDao),
-                                new SimpleAmountCalculator(programPartnerDao, new SimpleProgramChooser(bonusProgramDao))
+                                new SimpleAmountCalculator(new SimpleProgramChooser(programPartnerDao, bonusProgramDao))
                         ),
                         paymentBonusDao
         );
