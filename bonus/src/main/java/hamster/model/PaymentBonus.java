@@ -8,12 +8,14 @@ public class PaymentBonus extends AEntity {
 	private static final long serialVersionUID = 1L;
 
 	private final String payment;
+    private final String partner;
 	private final String transaction;
 	private final Amount amount;
 		
-	public PaymentBonus(String id, String payment, String transaction, Amount amount) {
+	public PaymentBonus(String id, String payment, String partner, String transaction, Amount amount) {
 		super(id);
 		this.payment = Preconditions.checkNotNull(payment);
+        this.partner = Preconditions.checkNotNull(partner);
 		this.amount = Preconditions.checkNotNull(amount);
 		this.transaction = transaction;
 	}
@@ -30,11 +32,16 @@ public class PaymentBonus extends AEntity {
 		return amount;
 	}
 
+    public String getPartner() {
+        return partner;
+    }
+
     @Override
     public String toString() {
         return Objects.toStringHelper(this)
                         .add("id", getId())
                         .add("payment", payment)
+                        .add("partner", partner)
                         .add("transaction", transaction)
                         .add("amount", amount)
                             .toString();

@@ -3,6 +3,7 @@ package hamster.service;
 import com.google.common.base.Preconditions;
 import hamster.bonus.AmountCalculator;
 import hamster.bonus.BonusData;
+import hamster.bonus.PartnerChooser;
 import hamster.dao.PaymentBonusDao;
 import hamster.model.*;
 import hamster.payment.PaymentBuilder;
@@ -19,13 +20,16 @@ partner state TEST
 public class BonusServiceImpl implements BonusService {
 
     private PaymentDao paymentDao;
+    private PartnerChooser partnerChooser;
     private AmountCalculator bonusAmountCalculator;
     private PaymentBonusDao paymentBonusDao;
 
     public BonusServiceImpl(PaymentDao paymentDao,
+                            PartnerChooser partnerChooser,
                             AmountCalculator bonusAmountCalculator,
                             PaymentBonusDao paymentBonusDao) {
         this.paymentDao = Preconditions.checkNotNull(paymentDao);
+        this.partnerChooser = Preconditions.checkNotNull(partnerChooser);
         this.bonusAmountCalculator = Preconditions.checkNotNull(bonusAmountCalculator);
         this.paymentBonusDao =Preconditions.checkNotNull(paymentBonusDao);
     }
@@ -36,10 +40,12 @@ public class BonusServiceImpl implements BonusService {
         data.validate();
         // save payment
         Payment payment = paymentDao.save(PaymentBuilder.create(data.getPayment()).build());
+        // choose partner checking status
+        Partner partner = partnerChooser.get(data, data.getPayment().getPartner());
         // calculate bonus amount
-        Amount bonusAmount = bonusAmountCalculator.calculate(data, data.getPayment().getPartner());
+        Amount bonusAmount = bonusAmountCalculator.calculate(data, partner.getId());
         // save payment bonus
-        return paymentBonusDao.save(new PaymentBonus(null, payment.getId(), null, bonusAmount));
+        return paymentBonusDao.save(new PaymentBonus(null, payment.getId(), partner.getId(), null, bonusAmount));
 	}
 
 	@Override

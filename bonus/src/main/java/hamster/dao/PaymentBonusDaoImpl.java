@@ -21,6 +21,7 @@ public class PaymentBonusDaoImpl extends JdbcRepository<PaymentBonus, String> im
             return new PaymentBonus(
                     rs.getString("id"),
                     rs.getString("payment"),
+                    rs.getString("partner"),
                     rs.getString("transaction"),
                     Utils.createAmount(rs)
             );
@@ -32,6 +33,7 @@ public class PaymentBonusDaoImpl extends JdbcRepository<PaymentBonus, String> im
         public Map<String, Object> mapColumns(PaymentBonus bp) {
             return Utils.ColumnsBuilder.create()
                     .add("payment", bp.getPayment())
+                    .add("partner", bp.getPartner())
                     .add("transaction", bp.getTransaction())
                     .add(bp.getAmount())
                     .build();
@@ -43,7 +45,7 @@ public class PaymentBonusDaoImpl extends JdbcRepository<PaymentBonus, String> im
     }
     @Override
     protected PaymentBonus postCreate(PaymentBonus entity, Number generatedId) {
-        return new PaymentBonus(generatedId.toString(), entity.getPayment(), entity.getTransaction(), entity.getAmount());
+        return new PaymentBonus(generatedId.toString(), entity.getPayment(), entity.getPartner(), entity.getTransaction(), entity.getAmount());
     }
 
 }

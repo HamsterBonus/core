@@ -5,6 +5,7 @@ import hamster.dao.PartnerDao;
 import hamster.dao.PartnerMerchantDao;
 import hamster.model.Partner;
 import hamster.model.PartnerMerchant;
+import hamster.model.PartnerMerchantState;
 import hamster.model.PartnerState;
 import hamster.validation.ValidationException;
 import org.apache.commons.lang3.StringUtils;
@@ -22,12 +23,16 @@ public class SimplePartnerChooser implements PartnerChooser {
     @Override
     public Partner get(BonusData data, String partnerId) {
         Partner partner = getAndCheckPartner(partnerId);
+        System.out.println("Merchant " + data.getPayment().getMerchant());
         if(StringUtils.isEmpty(data.getPayment().getMerchant())){
             return partner;
         }
+        System.out.println("Partent, Merchant " + partner.getId() + " " + data.getPayment().getMerchant());
         PartnerMerchant pm = partnerMerchantDao.findByParentAndMerchant(partner.getId(), data.getPayment().getMerchant());
-        if(pm == null || !pm.isUseMerchantBalance()){
-            //todo: check status
+        System.out.println(pm);
+        if(pm == null
+                || !pm.isUseMerchantBalance()
+                || !PartnerMerchantState.CONFIRMED.equals(pm.getState())){
             return partner;
         }
         return getAndCheckPartner(pm.getPartner());
