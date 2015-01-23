@@ -2,6 +2,7 @@ package hamster.bonus;
 
 import com.google.common.base.Preconditions;
 import hamster.model.Amount;
+import hamster.model.BonusProgram;
 
 public class AmountCalculatorDecorator implements AmountCalculator {
 
@@ -15,9 +16,9 @@ public class AmountCalculatorDecorator implements AmountCalculator {
     }
 
     @Override
-    public Amount calculate(BonusData data, String partnerId) {
+    public Amount calculate(BonusData data, BonusProgram program, String partnerId) {
         // calculate bonus amount
-        Amount bonusAmount = bonusAmountCalculator.calculate(data, partnerId);
+        Amount bonusAmount = bonusAmountCalculator.calculate(data, program, partnerId);
         // check partner
         return partnerPossibility.check(partnerId, bonusAmount);
     }

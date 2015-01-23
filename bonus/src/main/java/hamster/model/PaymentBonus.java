@@ -9,13 +9,15 @@ public class PaymentBonus extends AEntity {
 
 	private final String payment;
     private final String partner;
+    private final String program;
 	private final String transaction;
 	private final Amount amount;
 		
-	public PaymentBonus(String id, String payment, String partner, String transaction, Amount amount) {
+	public PaymentBonus(String id, String payment, String partner, String program, String transaction, Amount amount) {
 		super(id);
 		this.payment = Preconditions.checkNotNull(payment);
         this.partner = Preconditions.checkNotNull(partner);
+        this.program = Preconditions.checkNotNull(program);
 		this.amount = Preconditions.checkNotNull(amount);
 		this.transaction = transaction;
 	}
@@ -36,12 +38,17 @@ public class PaymentBonus extends AEntity {
         return partner;
     }
 
+    public String getProgram() {
+        return program;
+    }
+
     @Override
     public String toString() {
         return Objects.toStringHelper(this)
                         .add("id", getId())
                         .add("payment", payment)
                         .add("partner", partner)
+                        .add("program", program)
                         .add("transaction", transaction)
                         .add("amount", amount)
                             .toString();

@@ -43,7 +43,8 @@ public class SimpleProgramChooser implements ProgramChooser {
                                 ? input.isByDefault()
                                 : data.getProgram().equals(input.getProgram());
                     }
-                }
+                },
+                null
         );
         if(pm == null){
             throw new ValidationException("Can't choose active program");

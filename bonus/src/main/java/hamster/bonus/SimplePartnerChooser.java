@@ -23,13 +23,10 @@ public class SimplePartnerChooser implements PartnerChooser {
     @Override
     public Partner get(BonusData data, String partnerId) {
         Partner partner = getAndCheckPartner(partnerId);
-        System.out.println("Merchant " + data.getPayment().getMerchant());
         if(StringUtils.isEmpty(data.getPayment().getMerchant())){
             return partner;
         }
-        System.out.println("Partent, Merchant " + partner.getId() + " " + data.getPayment().getMerchant());
         PartnerMerchant pm = partnerMerchantDao.findByParentAndMerchant(partner.getId(), data.getPayment().getMerchant());
-        System.out.println(pm);
         if(pm == null
                 || !pm.isUseMerchantBalance()
                 || !PartnerMerchantState.CONFIRMED.equals(pm.getState())){
