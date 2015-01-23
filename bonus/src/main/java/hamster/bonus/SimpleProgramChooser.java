@@ -8,6 +8,7 @@ import hamster.dao.ProgramPartnerDao;
 import hamster.error.SystemException;
 import hamster.model.BonusProgram;
 import hamster.model.ProgramPartner;
+import hamster.model.ProgramPartnerState;
 import hamster.validation.ValidationException;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.util.CollectionUtils;
@@ -46,7 +47,8 @@ public class SimpleProgramChooser implements ProgramChooser {
                 },
                 null
         );
-        if(pm == null){
+        if(pm == null
+                || !ProgramPartnerState.ACTIVE.equals(pm.getState())){
             throw new ValidationException("Can't choose active program");
         }
         //todo: check status

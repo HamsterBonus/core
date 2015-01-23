@@ -89,6 +89,7 @@ public class BonusServiceTest extends AServiceTest {
 
     @Test
     public void testStartWithNotActiveProgram(){
+        createWithValidationException(correctStartData().setProgram(Dictionary.PROGRAM_CANCELLED));
     }
 
     private void createWithValidationException(BonusData data){

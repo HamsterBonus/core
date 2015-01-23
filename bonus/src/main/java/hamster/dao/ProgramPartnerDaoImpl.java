@@ -1,9 +1,11 @@
 package hamster.dao;
 
+import com.google.common.base.Enums;
 import com.nurkiewicz.jdbcrepository.JdbcRepository;
 import com.nurkiewicz.jdbcrepository.RowUnmapper;
 import com.nurkiewicz.jdbcrepository.TableDescription;
 import hamster.model.ProgramPartner;
+import hamster.model.ProgramPartnerState;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
@@ -23,7 +25,8 @@ public class ProgramPartnerDaoImpl extends JdbcRepository<ProgramPartner, String
                     rs.getString("id"),
                     rs.getString("program"),
                     rs.getString("partner"),
-                    rs.getBoolean("by_default")
+                    rs.getBoolean("by_default"),
+                    Enums.getIfPresent(ProgramPartnerState.class, rs.getString("state_id")).orNull()
             );
         }
     };
@@ -35,6 +38,7 @@ public class ProgramPartnerDaoImpl extends JdbcRepository<ProgramPartner, String
                     .add("program", bpm.getProgram())
                     .add("partner", bpm.getPartner())
                     .add("by_default", bpm.isByDefault())
+                    .add("state_id", bpm.getState().getId())
                     .build();
         }
     };

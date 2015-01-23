@@ -12,4 +12,5 @@ public interface Dictionary {
 
     public static final String PROGRAM_ACTIVE_DEFAULT = "1";
     public static final String PROGRAM_ACTIVE_CHANGED = "2";
+    public static final String PROGRAM_CANCELLED = "3";
 }

@@ -10,12 +10,14 @@ public class ProgramPartner extends AEntity {
     private final String program;
     private final String partner;
     private boolean byDefault;
+    private ProgramPartnerState state;
 
-    public ProgramPartner(String id, String program, String partner, boolean byDefault) {
+    public ProgramPartner(String id, String program, String partner, boolean byDefault, ProgramPartnerState state) {
         super(id);
         this.program = Preconditions.checkNotNull(program);
         this.partner = Preconditions.checkNotNull(partner);
         this.byDefault = byDefault;
+        this.state = Preconditions.checkNotNull(state);
     }
 
     public String getProgram() {
@@ -30,6 +32,10 @@ public class ProgramPartner extends AEntity {
         return byDefault;
     }
 
+    public ProgramPartnerState getState() {
+        return state;
+    }
+
     @Override
     public String toString() {
         return Objects.toStringHelper(this)
@@ -37,6 +43,7 @@ public class ProgramPartner extends AEntity {
                 .add("program", program)
                 .add("partner", partner)
                 .add("default", byDefault)
+                .add("state", state)
                 .toString();
     }
 
