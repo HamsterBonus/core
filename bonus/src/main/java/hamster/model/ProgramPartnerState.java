@@ -1,9 +1,8 @@
 package hamster.model;
 
 import hamster.state.State;
-import org.springframework.data.domain.Persistable;
 
-public enum ProgramPartnerState implements Persistable<String>, State {
+public enum ProgramPartnerState implements State {
     ACTIVE,
     CANCELLED,
     WAITED,

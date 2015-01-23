@@ -1,6 +1,5 @@
 package hamster.dao;
 
-import com.google.common.base.Enums;
 import com.nurkiewicz.jdbcrepository.JdbcRepository;
 import com.nurkiewicz.jdbcrepository.RowUnmapper;
 import com.nurkiewicz.jdbcrepository.TableDescription;
@@ -22,7 +21,7 @@ public class PartnerDaoImpl extends JdbcRepository<Partner, String> implements P
         public Partner mapRow(ResultSet rs, int rowNum) throws SQLException {
             return new Partner(
                     rs.getString("id"),
-                    Enums.getIfPresent(PartnerState.class, rs.getString("state_id")).orNull()
+                    Utils.createState(rs, PartnerState.class)
             );
         }
     };
@@ -31,7 +30,7 @@ public class PartnerDaoImpl extends JdbcRepository<Partner, String> implements P
         @Override
         public Map<String, Object> mapColumns(Partner partner) {
             return Utils.ColumnsBuilder.create()
-                    .add("state_id", partner.getState().getId())
+                    .add(partner.getState())
                     .build();
         }
     };

@@ -1,6 +1,5 @@
 package hamster.dao;
 
-import com.google.common.base.Enums;
 import com.nurkiewicz.jdbcrepository.JdbcRepository;
 import com.nurkiewicz.jdbcrepository.RowUnmapper;
 import com.nurkiewicz.jdbcrepository.TableDescription;
@@ -26,7 +25,7 @@ public class PartnerMerchantDaoImpl extends JdbcRepository<PartnerMerchant, Stri
                     rs.getString("merchant"),
                     rs.getString("partner"),
                     rs.getBoolean("use_merchant_balance"),
-                    Enums.getIfPresent(PartnerMerchantState.class, rs.getString("state_id")).orNull()
+                    Utils.createState(rs, PartnerMerchantState.class)
             );
         }
     };
@@ -39,7 +38,7 @@ public class PartnerMerchantDaoImpl extends JdbcRepository<PartnerMerchant, Stri
                     .add("merchant", partner.getMerchant())
                     .add("partner", partner.getPartner())
                     .add("use_merchant_balance", partner.isUseMerchantBalance())
-                    .add("state", partner.getState())
+                    .add(partner.getState())
                     .build();
         }
     };
