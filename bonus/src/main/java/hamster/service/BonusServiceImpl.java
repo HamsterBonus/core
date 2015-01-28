@@ -11,7 +11,6 @@ import hamster.payment.PaymentBuilder;
 import hamster.dao.PaymentDao;
 
 /*
-test refactoring
 code refactoring - command, java8 functions
 tx tests
 error code for exception
