@@ -2,7 +2,9 @@ package hamster.service;
 
 import static org.junit.Assert.*;
 
+import hamster.balance.AmountBuilder;
 import hamster.bonus.BonusData;
+import hamster.model.Amount;
 import hamster.model.PaymentBonus;
 import hamster.test.Dictionary;
 import hamster.validation.ValidationException;
@@ -92,6 +94,33 @@ public class BonusServiceTest extends AServiceTest {
         createWithValidationException(correctStartData().setProgram(Dictionary.PROGRAM_CANCELLED));
     }
 
+    @Test
+    public void testStartWithBalanceAmountWhenAmountCanNotBeChanged(){
+        BonusData data = correctStartData()
+                .setCurrency("RUB")
+                .setValue("15");
+        check(data, bonusService.start(data));
+    }
+
+    @Test
+    public void testStartWithBalanceAmountWhenAmountCanBeChanged(){
+        BonusData data = correctStartData()
+                .setProgram(Dictionary.PROGRAM_ACTIVE_CHANGED)
+                .setCurrency("RUB")
+                .setValue("15");
+        checkWithAmount(data, AmountBuilder.create().value(15).currency("RUB").build(), bonusService.start(data));
+    }
+
+    @Test
+    public void testStartWithBalanceAmountMoreThenPartnerBalance(){
+        createWithValidationException(
+                    correctStartData()
+                        .setProgram(Dictionary.PROGRAM_ACTIVE_CHANGED)
+                        .setCurrency("RUB")
+                        .setValue("150")
+        );
+    }
+
     private void createWithValidationException(BonusData data){
         try{
             bonusService.start(data);
@@ -104,7 +133,11 @@ public class BonusServiceTest extends AServiceTest {
     }
 
     private void check(BonusData input, PaymentBonus result){
-        check(input, input.getPayment().getPartner(), input.getProgram(), result);
+        checkWithAmount(input, balanceAmount(), result);
+    }
+
+    private void checkWithAmount(BonusData input, Amount amount, PaymentBonus result){
+        check(input, input.getPayment().getPartner(), input.getProgram(), amount, result);
     }
 
     private void checkWithPartner(BonusData input, String partner, PaymentBonus result){
@@ -116,6 +149,10 @@ public class BonusServiceTest extends AServiceTest {
     }
 
     private void check(BonusData input, String partner, String program, PaymentBonus result){
+        check(input, partner, program, balanceAmount(), result);
+    }
+
+    private void check(BonusData input, String partner, String program, Amount amount, PaymentBonus result){
         //todo: check payment record, compare with input data
         //todo: check count of records payment_bonus tables
         assertNotNull(result);
@@ -123,7 +160,7 @@ public class BonusServiceTest extends AServiceTest {
         assertEquals(partner, result.getPartner());
         assertEquals(program, result.getProgram());
         assertNull(result.getTransaction());
-        assertTrue(result.getAmount().isPositive());
+        assertEquals(amount, result.getAmount());
     }
 
     private BonusData correctStartData(){
@@ -131,9 +168,12 @@ public class BonusServiceTest extends AServiceTest {
                     .setProgram(Dictionary.PROGRAM_ACTIVE_DEFAULT);
         data.getPayment()
                 .setPartner(Dictionary.PARTNER_ACTIVE)
-                .setAmountValue("1")
+                .setAmountValue("100")
                 .setAmountCurrency("RUB");
         return data;
     }
 
+    private Amount balanceAmount(){
+        return AmountBuilder.create().value(10).currency("RUB").build();
+    }
 }

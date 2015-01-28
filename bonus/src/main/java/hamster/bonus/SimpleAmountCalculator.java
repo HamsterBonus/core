@@ -4,6 +4,8 @@ import hamster.balance.AmountBuilder;
 import hamster.model.Amount;
 import hamster.model.BonusProgram;
 
+import java.math.BigDecimal;
+
 public class SimpleAmountCalculator implements AmountCalculator {
 
     @Override
@@ -15,7 +17,7 @@ public class SimpleAmountCalculator implements AmountCalculator {
         }
         return AmountBuilder.create(data.getPayment().getAmount())
                 .multiply()
-                    .value(program.getPercent())
+                    .value(BigDecimal.ONE.divide(program.getPercent()))
                         .build();
     }
 }

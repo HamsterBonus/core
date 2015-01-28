@@ -6,6 +6,7 @@ import hamster.dao.PartnerBalanceDao;
 import hamster.model.Amount;
 import hamster.model.Balance;
 import hamster.model.PartnerBalance;
+import hamster.validation.ValidationException;
 
 import java.util.Collection;
 import java.util.Currency;
@@ -27,7 +28,7 @@ public class SimplePartnerPossibility implements PartnerPossibility {
         Balance balance = findPartnerBalance(partner, bonus.getCurrency());
         if(balance == null
                 || balance.getActiveValue().compareTo(bonus) < 0){
-            //todo: throw exception
+            throw new ValidationException("Partner balance is less then bonus amount");
         }
         return bonus;
     }
